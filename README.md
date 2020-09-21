@@ -1,2 +1,2 @@
 # CLAndroidUtil
-One common Android
+One common Android util package
