@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="StrokeTextView">
+        <attr name="cl_strokeColor" format="color"/>
+        <attr name="cl_strokeWidth" format="dimension"/>
+    </declare-styleable>
+    <declare-styleable name="IndicatorTabView">
+        <attr name="cl_indicatorTextColor" format="color"/>
+        <attr name="cl_indicatorSelectedTextColor" format="color"/>
+        <attr name="cl_indicatorTextSize" format="dimension"/>
+        <attr name="cl_indicatorColor" format="color"/>
+        <attr name="cl_indicatorWidth" format="dimension"/>
+        <attr name="cl_indicatorHeight" format="dimension"/>
+    </declare-styleable>
+</resources>

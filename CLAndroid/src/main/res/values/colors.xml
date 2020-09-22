@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="clTransparent">#00FFFFFF</color>
+    <!-- Changes are needed to override the secondary color value in the module used -->
+    <!-- 需要更改则在使用的module中覆盖次颜色值 -->
+    <color name="clSingleProgress">#2684FF</color>
+    <!-- 带确认的Dialog的文字颜色 -->
+    <color name="clDialogConfirmTextColor">#2684FF</color>
+</resources>
