@@ -152,23 +152,23 @@ public class PrintLineLog {
      * @param level Level
      */
     private static void switchLogLevel(String tag, String msg, int level) {
-        if (isFirst) {
-            // The first time you enter, determine if it is displayed
-            try {
-                // todo
-                // Android 11 ExternalStorage update resolve
-                File sdFile = Environment.getExternalStorageDirectory();
-                File logOpenFile = new File(sdFile, LOG_OPEN_FILE_NAME);
-                if (logOpenFile.exists()) {
-                    Log.i("PrintLineLog", "PrintLineLog file exists log open");
-                    LOG_DEBUG = true;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-            isFirst = false;
-
-        }
+        //if (isFirst) {
+        //    // The first time you enter, determine if it is displayed
+        //    try {
+        //        // todo
+        //        // Android 11 ExternalStorage update resolve
+        //        File sdFile = Environment.getExternalStorageDirectory();
+        //        File logOpenFile = new File(sdFile, LOG_OPEN_FILE_NAME);
+        //        if (logOpenFile.exists()) {
+        //            Log.i("PrintLineLog", "PrintLineLog file exists log open");
+        //            LOG_DEBUG = true;
+        //        }
+        //    } catch (Exception e) {
+        //        e.printStackTrace();
+        //    }
+        //    isFirst = false;
+        //
+        //}
         if (!LOG_DEBUG) {
             return;
         }

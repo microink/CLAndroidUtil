@@ -1,5 +1,6 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.microink.clandroid">
 
-    /
+    <!-- 请求网络 -->
+    <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

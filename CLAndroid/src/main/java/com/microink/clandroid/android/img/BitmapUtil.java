@@ -2,6 +2,7 @@ package com.microink.clandroid.android.img;
 
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Rect;
 
 /**
@@ -35,5 +36,48 @@ public class BitmapUtil {
         Rect frontRect = new Rect(0, 0, frontBitmap.getWidth(), frontBitmap.getHeight());
         canvas.drawBitmap(frontBitmap, frontRect, baseRect, null);
         return bitmap;
+    }
+
+    /**
+     * 旋转Bitmap
+     * @param bm
+     * @param rotationDegrees
+     * @param isRecycleOld 是否回收原图
+     * @return
+     */
+    public static Bitmap rotateBitmap(Bitmap bm, int rotationDegrees, boolean isRecycleOld) {
+        if (rotationDegrees != 0) {
+            Matrix matrix = new Matrix();
+            matrix.postRotate(rotationDegrees);
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(bm,
+                    bm.getWidth(), bm.getHeight(), true);
+            Bitmap bitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
+                    scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+            if (isRecycleOld) {
+                bm.recycle();
+            }
+            return bitmap;
+        }
+        return bm;
+    }
+
+    /**
+     * 缩放Bitmap
+     * @param bm
+     * @param newWidth 目标宽
+     * @param newHeight 目标高
+     * @param isRecycleOld 是否回收原图
+     * @return
+     */
+    public static Bitmap scaleBitmap(Bitmap bm, int newWidth, int newHeight, boolean isRecycleOld) {
+        if (0 < newWidth && 0 < newHeight) {
+            Bitmap scaledBitmap = Bitmap.createScaledBitmap(bm,
+                    newWidth, newHeight, true);
+            if (isRecycleOld) {
+                bm.recycle();
+            }
+            return scaledBitmap;
+        }
+        return bm;
     }
 }
