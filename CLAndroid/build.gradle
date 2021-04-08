@@ -8,7 +8,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 2
-        versionName "0.2"
+        versionName "0.2-2021-0408"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -16,9 +16,10 @@ android {
 
     buildTypes {
         release {
-            minifyEnabled false
-            consumerProguardFiles "consumer-rules.pro"
-//            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            // 开启混淆
+            minifyEnabled true
+            consumerProguardFiles 'consumer-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
 }

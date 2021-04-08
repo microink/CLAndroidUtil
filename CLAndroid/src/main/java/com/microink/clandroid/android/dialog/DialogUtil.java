@@ -1,8 +1,10 @@
 package com.microink.clandroid.android.dialog;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -11,8 +13,6 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.microink.clandroid.R;
-
-import androidx.appcompat.app.AlertDialog;
 
 /**
  * @author Cass
@@ -80,34 +80,53 @@ public class DialogUtil {
     }
 
     /**
-     * Displays a message, Dialog of two buttons
      * 显示一条消息，两个按钮的Dialog
-     *
-     * @param activity Activity
-     * @param msg Msg
-     * @param listener Click listener
+     * @param activity
+     * @param msg
+     * @param listener
      */
     public static void showOneMsgTwoBtnDialog(Activity activity, String msg,
-            final DialogTwoBtnClickListener listener) {
+            DialogTwoBtnClickListener listener) {
+        showOneMsgTwoBtnDialog(activity, msg, null, null, listener);
+    }
+
+    /**
+     * 显示一条消息，两个按钮的Dialog
+     * @param activity
+     * @param msg
+     * @param listener
+     */
+    public static void showOneMsgTwoBtnDialog(Activity activity, String msg, String cancel,
+            String confirm, final DialogTwoBtnClickListener listener) {
         if (null == activity || activity.isFinishing()) {
             return;
         }
-        final AlertDialog dlg = new AlertDialog.Builder(activity).show();
+        final android.app.AlertDialog dlg = new android.app.AlertDialog.Builder(activity).show();
         Window window = dlg.getWindow();
         window.setContentView(R.layout.cl_dialog_one_msg_two_btn);
         WindowManager.LayoutParams lp = dlg.getWindow().getAttributes();
         lp.gravity = Gravity.CENTER;
         window.setAttributes(lp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-        TextView content = window.findViewById(R.id.content);
+        TextView content = window.findViewById(R.id.tv_msg_one_msg_two_btn_dialog);
         content.setText(msg);
         Button cancelBtn = window.findViewById(R.id.btn_cancel_one_msg_two_btn_dialog);
         Button confirmBtn = window.findViewById(R.id.btn_confirm_one_msg_two_btn_dialog);
+        if (!TextUtils.isEmpty(confirm)) {
+            confirmBtn.setText(confirm);
+        }
+        if (!TextUtils.isEmpty(cancel)) {
+            cancelBtn.setText(cancel);
+        }
 
         cancelBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dlg.dismiss();
+                try {
+                    dlg.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if (null != listener) {
                     listener.clickCancel();
                 }
@@ -116,7 +135,62 @@ public class DialogUtil {
         confirmBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dlg.dismiss();
+                try {
+                    dlg.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                if (null != listener) {
+                    listener.clickConfirm();
+                }
+            }
+        });
+    }
+
+    /**
+     * 显示一条消息，一个按钮的Dialog
+     * @param activity
+     * @param msg
+     * @param listener
+     */
+    public static void showOneMsgOneBtnDialog(Activity activity, String msg,
+            DialogOneBtnClickListener listener) {
+        showOneMsgOneBtnDialog(activity, msg, null, listener);
+    }
+
+    /**
+     * 显示一条消息，一个按钮的Dialog
+     * @param activity
+     * @param msg
+     * @param listener
+     */
+    public static void showOneMsgOneBtnDialog(Activity activity, String msg, String confirm,
+            final DialogOneBtnClickListener listener) {
+        if (null == activity || activity.isFinishing()) {
+            return;
+        }
+        final android.app.AlertDialog dlg = new AlertDialog.Builder(activity).show();
+        Window window = dlg.getWindow();
+        window.setContentView(R.layout.cl_dialog_one_msg_one_btn);
+        WindowManager.LayoutParams lp = dlg.getWindow().getAttributes();
+        lp.gravity = Gravity.CENTER;
+        window.setAttributes(lp);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        TextView content = window.findViewById(R.id.tv_msg_one_msg_two_btn_dialog);
+        content.setText(msg);
+        Button confirmBtn = window.findViewById(R.id.btn_confirm_one_msg_two_btn_dialog);
+        if (!TextUtils.isEmpty(confirm)) {
+            confirmBtn.setText(confirm);
+        }
+
+        confirmBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    dlg.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 if (null != listener) {
                     listener.clickConfirm();
                 }
@@ -126,15 +200,20 @@ public class DialogUtil {
 
     public interface DialogTwoBtnClickListener {
         /**
-         * Click on the confirmation
          * 点击确认
          */
         void clickConfirm();
 
         /**
-         * Click cancel
          * 点击取消
          */
         void clickCancel();
+    }
+
+    public interface DialogOneBtnClickListener {
+        /**
+         * 点击确认
+         */
+        void clickConfirm();
     }
 }

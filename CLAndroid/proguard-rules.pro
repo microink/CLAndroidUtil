@@ -42,3 +42,30 @@
 -keep class sun.misc.Unsafe.* { *; }
 -keep class com.google.gson.stream.* { *; }
 -keep class com.google.gson.examples.android.model.* { *; }
+
+#-------------- okhttp3 start-------------
+# OkHttp3
+# https://github.com/square/okhttp
+# okhttp
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class com.squareup.okhttp.* { *; }
+-keep interface com.squareup.okhttp.** { *; }
+-dontwarn com.squareup.okhttp.**
+
+# okhttp 3
+-keepattributes Signature
+-keepattributes *Annotation*
+-keep class okhttp3.** { *; }
+-keep interface okhttp3.** { *; }
+-dontwarn okhttp3.**
+
+# Okio
+-dontwarn com.squareup.**
+-dontwarn okio.**
+-keep public class org.codehaus.* { *; }
+-keep public class java.nio.* { *; }
+#----------okhttp end--------------
+
+# 自己的
+-keep class com.microink.clandroid** {*;}
