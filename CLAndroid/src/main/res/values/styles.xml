@@ -22,4 +22,23 @@
         <!-- 后面的activity变暗 -->
         <item name="android:backgroundDimEnabled">true</item>
     </style>
+
+    <!-- BaseDialog -->
+    <style name="CLBaseDialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+    </style>
+
+    <!-- BaseDialog 动画 从下部滑动进入-->
+    <style name="CLBaseDialogAnimBottom" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/cl_dialog_bottom_enter</item>
+        <item name="android:windowExitAnimation">@anim/cl_dialog_bottom_exit</item>
+    </style>
+
+    <!-- BaseDialog 动画 从中间透明度淡入淡出-->
+    <style name="CLBaseDialogAnimCenter" parent="@android:style/Animation.Dialog">
+        <item name="android:windowEnterAnimation">@anim/cl_dialog_center_enter</item>
+        <item name="android:windowExitAnimation">@anim/cl_dialog_center_exit</item>
+    </style>
 </resources>
