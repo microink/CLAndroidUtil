@@ -84,13 +84,15 @@ public abstract class BaseDialog extends Dialog implements View.OnClickListener 
         if (0 == this.height) {
             this.height = screenHeight;
         }
+
+        // 在构造函数中调用，避免没有show的时候view为空，无法设置view的相关属性
+        setContentView(getLayoutId());
     }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setCanceledOnTouchOutside(canceledOnTouchOutside);
-        setContentView(getLayoutId());
 
         Window window = getWindow();
         if (window != null) {
@@ -118,6 +120,24 @@ public abstract class BaseDialog extends Dialog implements View.OnClickListener 
     protected abstract void initView();
 
     protected abstract void fullUI();
+
+    @Override
+    public void show() {
+        try {
+            super.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void dismiss() {
+        try {
+            super.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     @Override
     public void onClick(View v) {

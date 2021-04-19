@@ -8,25 +8,26 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.microink.clandroid.R;
 
 /**
  * @author Cass
  * @version v1.0
- * @Date 2020/9/22 12:00 PM
+ * @Date 2021/4/13 12:00 PM
  *
  * A single color is added to the transparent ring load within the Dialog
- * 单独一个颜色到透明的圆环加载中Dialog
+ * 单独一个颜色到透明的圆环加载中Dialog 带一条文字提示
  */
-public class SingleColorProgressDialog extends Dialog {
+public class SingleColorWithTextProgressDialog extends Dialog {
 
     private Context mContext;
     private Drawable mOldWindowDrawable;
 
     private int layoutId;
 
-    public SingleColorProgressDialog(Context context, int style, int layout) {
+    public SingleColorWithTextProgressDialog(Context context, int style, int layout) {
         super(context, style);
         mContext = context;
         WindowManager.LayoutParams Params = getWindow().getAttributes();
@@ -39,12 +40,12 @@ public class SingleColorProgressDialog extends Dialog {
         setContentView(layoutId);
     }
 
-    public SingleColorProgressDialog(Context context, int layout) {
+    public SingleColorWithTextProgressDialog(Context context, int layout) {
         this(context, R.style.SingleColorProgressDialog, layout);
     }
 
-    public SingleColorProgressDialog(Context context) {
-        this(context, R.style.SingleColorProgressDialog, R.layout.cl_dialog_single_color_progress);
+    public SingleColorWithTextProgressDialog(Context context) {
+        this(context, R.style.SingleColorProgressDialog, R.layout.cl_dialog_single_color_with_text_progress);
     }
 
     @Override
@@ -57,6 +58,15 @@ public class SingleColorProgressDialog extends Dialog {
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
 
+    /**
+     * 设置文本内容
+     * @param text
+     */
+    public void setText(String text) {
+        TextView textView = findViewById(R.id.tv_single_progress);
+        textView.setText(text);
+    }
+
     @Override
     public void dismiss() {
         // Empty static references to avoid memory leaks
@@ -67,6 +77,10 @@ public class SingleColorProgressDialog extends Dialog {
         Window window = getWindow();
         window.setBackgroundDrawable(mOldWindowDrawable);
 
-        super.dismiss();
+        try {
+            super.dismiss();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

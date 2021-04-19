@@ -3,6 +3,8 @@ package com.microink.clandroid.android.log;
 import android.os.Environment;
 import android.util.Log;
 
+import com.microink.clandroid.java.exception.ExceptionUtil;
+
 import java.io.File;
 
 /**
@@ -77,6 +79,22 @@ public class PrintLineLog {
         switchLogLevel(tag, msg, V_LEVEL);
     }
 
+    public static void v(Throwable throwable) {
+        if (!LOG_DEBUG) {
+            return;
+        }
+        String msg = ExceptionUtil.exceptionToString(throwable);
+        switchLogLevel(null, msg, V_LEVEL);
+    }
+
+    public static void v(String tag, Throwable throwable) {
+        if (!LOG_DEBUG) {
+            return;
+        }
+        String msg = ExceptionUtil.exceptionToString(throwable);
+        switchLogLevel(tag, msg, V_LEVEL);
+    }
+
     /**
      * The d level prints the Log default tag file name
      * @param msg msg
@@ -91,6 +109,22 @@ public class PrintLineLog {
      * @param msg Msg
      */
     public static void d(String tag, String msg) {
+        switchLogLevel(tag, msg, D_LEVEL);
+    }
+
+    public static void d(Throwable throwable) {
+        if (!LOG_DEBUG) {
+            return;
+        }
+        String msg = ExceptionUtil.exceptionToString(throwable);
+        switchLogLevel(null, msg, D_LEVEL);
+    }
+
+    public static void d(String tag, Throwable throwable) {
+        if (!LOG_DEBUG) {
+            return;
+        }
+        String msg = ExceptionUtil.exceptionToString(throwable);
         switchLogLevel(tag, msg, D_LEVEL);
     }
 
@@ -111,6 +145,22 @@ public class PrintLineLog {
         switchLogLevel(tag, msg, I_LEVEL);
     }
 
+    public static void i(Throwable throwable) {
+        if (!LOG_DEBUG) {
+            return;
+        }
+        String msg = ExceptionUtil.exceptionToString(throwable);
+        switchLogLevel(null, msg, I_LEVEL);
+    }
+
+    public static void i(String tag, Throwable throwable) {
+        if (!LOG_DEBUG) {
+            return;
+        }
+        String msg = ExceptionUtil.exceptionToString(throwable);
+        switchLogLevel(tag, msg, I_LEVEL);
+    }
+
     /**
      * The w level prints the Log default tag file name
      * @param msg Msg
@@ -128,6 +178,22 @@ public class PrintLineLog {
         switchLogLevel(tag, msg, W_LEVEL);
     }
 
+    public static void w(Throwable throwable) {
+        if (!LOG_DEBUG) {
+            return;
+        }
+        String msg = ExceptionUtil.exceptionToString(throwable);
+        switchLogLevel(null, msg, W_LEVEL);
+    }
+
+    public static void w(String tag, Throwable throwable) {
+        if (!LOG_DEBUG) {
+            return;
+        }
+        String msg = ExceptionUtil.exceptionToString(throwable);
+        switchLogLevel(tag, msg, W_LEVEL);
+    }
+
     /**
      * The e level prints the Log default tag file name
      * @param msg Msg
@@ -142,6 +208,22 @@ public class PrintLineLog {
      * @param msg Msg
      */
     public static void e(String tag, String msg) {
+        switchLogLevel(tag, msg, E_LEVEL);
+    }
+
+    public static void e(Throwable throwable) {
+        if (!LOG_DEBUG) {
+            return;
+        }
+        String msg = ExceptionUtil.exceptionToString(throwable);
+        switchLogLevel(null, msg, E_LEVEL);
+    }
+
+    public static void e(String tag, Throwable throwable) {
+        if (!LOG_DEBUG) {
+            return;
+        }
+        String msg = ExceptionUtil.exceptionToString(throwable);
         switchLogLevel(tag, msg, E_LEVEL);
     }
 

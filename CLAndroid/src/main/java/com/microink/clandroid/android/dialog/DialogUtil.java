@@ -23,6 +23,7 @@ import com.microink.clandroid.R;
  */
 public class DialogUtil {
     private static SingleColorProgressDialog sProgressDialog;
+    private static SingleColorWithTextProgressDialog sProgressWithTextDialog;
 
     /**
      * Displays the loop progress Dialog
@@ -34,7 +35,29 @@ public class DialogUtil {
         if (null != activity && !activity.isFinishing()) {
             sProgressDialog = new SingleColorProgressDialog(activity);
             sProgressDialog.setCancelable(false);
-            sProgressDialog.show();
+            try {
+                sProgressDialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    /**
+     * 显示loading，带一条文字
+     * @param activity
+     * @param text
+     */
+    public static void showProgressWithTextDialog(Activity activity, String text) {
+        if (null != activity && !activity.isFinishing()) {
+            sProgressWithTextDialog = new SingleColorWithTextProgressDialog(activity);
+            sProgressWithTextDialog.setCancelable(false);
+            sProgressWithTextDialog.setText(text);
+            try {
+                sProgressWithTextDialog.show();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -47,28 +70,47 @@ public class DialogUtil {
                 sProgressDialog.dismiss();
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
         sProgressDialog = null;
     }
 
-    /**
-     * A callback when an Activity onDestory is destroyed,
-     * used for dialogs that can be manually canceled by the user
-     * Activity onDestory销毁时的回调，用于可被用户手动取消的Dialog
-     */
-    public static void activityDestory() {
-        if (null == sProgressDialog) {
+    public static void hideProgressWidthTextDialog(Activity activity) {
+        if (null == sProgressWithTextDialog) {
             return;
         }
         try {
-            if (sProgressDialog.isShowing()) {
+            if (sProgressWithTextDialog.isShowing() && (null != activity && !activity.isFinishing())) {
+                sProgressWithTextDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        sProgressWithTextDialog = null;
+    }
+
+    /**
+     * A callback when an Activity onDestroy is destroyed,
+     * used for dialogs that can be manually canceled by the user
+     * Activity onDestroy销毁时的回调，用于可被用户手动取消的Dialog
+     */
+    public static void activityDestroy() {
+        try {
+            if (null != sProgressDialog && sProgressDialog.isShowing()) {
                 sProgressDialog.dismiss();
             }
         } catch (Exception e) {
-
+            e.printStackTrace();
+        }
+        try {
+            if (null != sProgressWithTextDialog && sProgressWithTextDialog.isShowing()) {
+                sProgressWithTextDialog.dismiss();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         sProgressDialog = null;
+        sProgressWithTextDialog = null;
     }
 
     /**
@@ -77,6 +119,7 @@ public class DialogUtil {
      */
     public static void clearLetNullProgressDialog() {
         sProgressDialog = null;
+        sProgressWithTextDialog = null;
     }
 
     /**
