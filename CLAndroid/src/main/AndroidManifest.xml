@@ -3,4 +3,12 @@
 
     <!-- 请求网络 -->
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <application>
+        <!-- WebView的Activity -->
+        <activity android:name=".android.web.CLWebViewActivity"
+            android:theme="@style/CLWebViewActivity"
+            android:screenOrientation="portrait"
+            android:process=":clRemoteWeb"/>
+    </application>
 </manifest>

@@ -41,4 +41,8 @@
         <item name="android:windowEnterAnimation">@anim/cl_dialog_center_enter</item>
         <item name="android:windowExitAnimation">@anim/cl_dialog_center_exit</item>
     </style>
+
+    <style name="CLWebViewActivity" parent="Theme.AppCompat.NoActionBar">
+
+    </style>
 </resources>
