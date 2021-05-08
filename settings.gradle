@@ -1,3 +1,4 @@
+include ':CLCameraX'
 include ':CLAndroid'
 include ':app'
 rootProject.name = "CLAndroidUtil"
