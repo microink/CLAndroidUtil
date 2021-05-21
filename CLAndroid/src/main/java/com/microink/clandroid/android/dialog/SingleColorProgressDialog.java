@@ -25,8 +25,9 @@ public class SingleColorProgressDialog extends Dialog {
     private Drawable mOldWindowDrawable;
 
     private int layoutId;
+    private int uiVisibility; // 沉浸式标志
 
-    public SingleColorProgressDialog(Context context, int style, int layout) {
+    public SingleColorProgressDialog(Context context, int style, int layout, int uiVisibility) {
         super(context, style);
         mContext = context;
         WindowManager.LayoutParams Params = getWindow().getAttributes();
@@ -37,15 +38,23 @@ public class SingleColorProgressDialog extends Dialog {
 
         // 在构造函数中调用，避免没有show的时候view为空，无法设置view的相关属性
         setContentView(layoutId);
+
+        this.uiVisibility = uiVisibility;
     }
 
     public SingleColorProgressDialog(Context context, int layout) {
-        this(context, R.style.SingleColorProgressDialog, layout);
+        this(context, R.style.SingleColorProgressDialog, layout, 0);
     }
 
     public SingleColorProgressDialog(Context context) {
-        this(context, R.style.SingleColorProgressDialog, R.layout.cl_dialog_single_color_progress);
+        this(context, R.style.SingleColorProgressDialog, R.layout.cl_dialog_single_color_progress, 0);
     }
+
+    public SingleColorProgressDialog(int uiVisibility, Context context) {
+        this(context, R.style.SingleColorProgressDialog, R.layout.cl_dialog_single_color_progress,
+                uiVisibility);
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,6 +64,17 @@ public class SingleColorProgressDialog extends Dialog {
         Window window = getWindow();
         mOldWindowDrawable = window.getDecorView().getBackground();
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+    }
+
+    @Override
+    public void show() {
+        this.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE, WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        super.show();
+        // 设置是否沉浸
+        if (0 != uiVisibility) {
+            getWindow().getDecorView().setSystemUiVisibility(uiVisibility);
+        }
+        this.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
     }
 
     @Override

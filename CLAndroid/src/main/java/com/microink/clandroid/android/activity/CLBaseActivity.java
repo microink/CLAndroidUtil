@@ -40,7 +40,21 @@ public abstract class CLBaseActivity extends AppCompatActivity implements View.O
      * 设置沉浸式，如果不需要则复写该方法为空
      */
     protected void setImmersion() {
-        StatusBarUtil.setImmersion(this);
+        setImmersionAll();
+    }
+
+    /**
+     * 设置全部的沉浸式
+     */
+    protected void setImmersionAll() {
+        StatusBarUtil.setImmersionNoHideNavigationButton(this);
+    }
+
+    /**
+     * 设置沉浸式，但是不隐藏底部导航
+     */
+    protected void setImmersionNoHideNavigationButton() {
+        StatusBarUtil.setImmersionNoHideNavigationButton(this);
     }
 
     /**

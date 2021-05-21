@@ -2,6 +2,7 @@ package com.microink.clandroid.android.dialog;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.TextUtils;
@@ -33,7 +34,9 @@ public class DialogUtil {
      */
     public static void showProgressDialog(Activity activity) {
         if (null != activity && !activity.isFinishing()) {
-            sProgressDialog = new SingleColorProgressDialog(activity);
+            sProgressDialog = new SingleColorProgressDialog(
+                    activity.getWindow().getDecorView().getSystemUiVisibility(),
+                    activity);
             sProgressDialog.setCancelable(false);
             try {
                 sProgressDialog.show();
@@ -50,7 +53,9 @@ public class DialogUtil {
      */
     public static void showProgressWithTextDialog(Activity activity, String text) {
         if (null != activity && !activity.isFinishing()) {
-            sProgressWithTextDialog = new SingleColorWithTextProgressDialog(activity);
+            sProgressWithTextDialog = new SingleColorWithTextProgressDialog(
+                    activity.getWindow().getDecorView().getSystemUiVisibility(),
+                    activity);
             sProgressWithTextDialog.setCancelable(false);
             sProgressWithTextDialog.setText(text);
             try {
@@ -144,13 +149,15 @@ public class DialogUtil {
         if (null == activity || activity.isFinishing()) {
             return;
         }
-        final android.app.AlertDialog dlg = new android.app.AlertDialog.Builder(activity).show();
+        final Dialog dlg = new Dialog(activity);
         Window window = dlg.getWindow();
-        window.setContentView(R.layout.cl_dialog_one_msg_two_btn);
+        window.getDecorView().setSystemUiVisibility(activity.getWindow()
+                .getDecorView().getSystemUiVisibility());
         WindowManager.LayoutParams lp = dlg.getWindow().getAttributes();
         lp.gravity = Gravity.CENTER;
         window.setAttributes(lp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        window.setContentView(R.layout.cl_dialog_one_msg_two_btn);
         TextView content = window.findViewById(R.id.tv_msg_one_msg_two_btn_dialog);
         content.setText(msg);
         Button cancelBtn = window.findViewById(R.id.btn_cancel_one_msg_two_btn_dialog);
@@ -188,6 +195,19 @@ public class DialogUtil {
                 }
             }
         });
+
+        int uiVisibility = activity.getWindow().getDecorView().getSystemUiVisibility();
+        dlg.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        try {
+            dlg.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (0 != uiVisibility) {
+            dlg.getWindow().getDecorView().setSystemUiVisibility(uiVisibility);
+        }
+        dlg.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
     }
 
     /**
@@ -212,13 +232,15 @@ public class DialogUtil {
         if (null == activity || activity.isFinishing()) {
             return;
         }
-        final android.app.AlertDialog dlg = new AlertDialog.Builder(activity).show();
+        final Dialog dlg = new Dialog(activity);
         Window window = dlg.getWindow();
-        window.setContentView(R.layout.cl_dialog_one_msg_one_btn);
+        window.getDecorView().setSystemUiVisibility(activity.getWindow()
+                .getDecorView().getSystemUiVisibility());
         WindowManager.LayoutParams lp = dlg.getWindow().getAttributes();
         lp.gravity = Gravity.CENTER;
         window.setAttributes(lp);
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        window.setContentView(R.layout.cl_dialog_one_msg_one_btn);
         TextView content = window.findViewById(R.id.tv_msg_one_msg_two_btn_dialog);
         content.setText(msg);
         Button confirmBtn = window.findViewById(R.id.btn_confirm_one_msg_two_btn_dialog);
@@ -239,6 +261,19 @@ public class DialogUtil {
                 }
             }
         });
+
+        int uiVisibility = activity.getWindow().getDecorView().getSystemUiVisibility();
+        dlg.getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+                WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
+        try {
+            dlg.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (0 != uiVisibility) {
+            dlg.getWindow().getDecorView().setSystemUiVisibility(uiVisibility);
+        }
+        dlg.getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE);
     }
 
     public interface DialogTwoBtnClickListener {

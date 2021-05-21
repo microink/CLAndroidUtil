@@ -46,7 +46,7 @@ public class CLWebViewActivity extends AppCompatActivity implements View.OnClick
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // 沉浸式
-        StatusBarUtil.setImmersion(this);
+        StatusBarUtil.setImmersionNoHideNavigationButton(this);
         setContentView(R.layout.cl_activity_web_view);
 
         initData();

@@ -72,6 +72,54 @@ public class StatusBarUtil {
     }
 
     /**
+     * 设置沉浸式 但是不隐藏底部导航按钮
+     *
+     * @param activity Activity
+     */
+    public static void setImmersionNoHideNavigationButton(Activity activity) {
+
+        if (null == activity) {
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.KITKAT){
+            return;
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP){
+            Window window = activity.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            // Set the status bar color transparent
+            // 设置状态栏颜色透明
+            window.setStatusBarColor(Color.TRANSPARENT);
+
+            int visibility = window.getDecorView().getSystemUiVisibility();
+            // Layout content displayed in full screen
+            // 布局内容全屏展示
+            visibility |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
+            // Hide the virtual navigation bar
+            // 隐藏虚拟导航栏
+            //visibility |= View.SYSTEM_UI_FLAG_HIDE_NAVIGATION;
+            // The first time the entire Activity does not respond to an event
+            // after hiding the virtual navigation bar, use the following Flag
+            // 隐藏虚拟导航栏后整个Activity第一次会不响应事件，用下面的Flag
+            //visibility |= View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY;
+            // Prevents content area sizes from changing
+            // 防止内容区域大小发生变化
+            visibility |= View.SYSTEM_UI_FLAG_LAYOUT_STABLE;
+
+            // Set the color of the virtual navigation bar
+            // 设置虚拟导航栏颜色
+            // window.setNavigationBarColor(Color.parseColor("#1bb5d7"));
+            window.getDecorView().setSystemUiVisibility(visibility);
+        }else {
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+
+    }
+
+    /**
      * Gets the status bar height
      * 获取状态栏高度
      *
