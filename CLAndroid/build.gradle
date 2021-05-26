@@ -8,7 +8,7 @@ android {
         minSdkVersion 21
         targetSdkVersion 29
         versionCode 2
-        versionName "0.2-2021-0520"
+        versionName "0.2-2021-0526"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
 
@@ -34,4 +34,12 @@ dependencies {
     implementation 'com.squareup.okhttp3:okhttp:4.7.2'
     implementation 'com.google.code.gson:gson:2.8.6'
 
+    // Log4j2 日志记录
+    // 注意不要用最新的，最新的2.14要求Android版本在26以上
+//    implementation 'org.apache.logging.log4j:log4j-api:2.14.1'
+//    implementation 'org.apache.logging.log4j:log4j-core:2.14.1'
+
+    // PLog 日志记录
+//    implementation 'com.github.yhaolpz:PLog:1.1'
+    api project(path: ':PLog')
 }

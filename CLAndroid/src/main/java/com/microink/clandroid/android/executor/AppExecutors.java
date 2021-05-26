@@ -22,11 +22,11 @@ public class AppExecutors {
 
     private final Executor mNetworkIO;
 
-    private final Executor mMainThread;
+    private final MainThreadExecutor mMainThread;
 
     private final Executor mNormalThread;
 
-    private AppExecutors(Executor diskIO, Executor networkIO, Executor mainThread, Executor normalThread) {
+    private AppExecutors(Executor diskIO, Executor networkIO, MainThreadExecutor mainThread, Executor normalThread) {
         this.mDiskIO = diskIO;
         this.mNetworkIO = networkIO;
         this.mMainThread = mainThread;
@@ -46,7 +46,7 @@ public class AppExecutors {
         return mNetworkIO;
     }
 
-    public Executor mainThread() {
+    public MainThreadExecutor mainThread() {
         return mMainThread;
     }
 
@@ -61,6 +61,10 @@ public class AppExecutors {
         @Override
         public void execute(@NonNull Runnable command) {
             mainThreadHandler.post(command);
+        }
+
+        public void executeDelay(Runnable runnable, long time) {
+            mainThreadHandler.postDelayed(runnable, time);
         }
     }
 }

@@ -10,14 +10,58 @@ android {
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+
+        signingConfigs {
+            debugConfig {
+                keyAlias 'CLAndroid'
+                keyPassword 'yan,123.'
+                storeFile file('./CLAndroid.jks')
+                storePassword 'yan,123.'
+            }
+
+            prodConfig {
+                keyAlias 'CLAndroid'
+                keyPassword 'yan,123.'
+                storeFile file('./CLAndroid.jks')
+                storePassword 'yan,123.'
+            }
+        }
+    }
+
+    dexOptions {
+        preDexLibraries false
+        incremental false
+        javaMaxHeapSize "4096m"
     }
 
     buildTypes {
         release {
-            minifyEnabled false
+            // 混淆
+            minifyEnabled true
+            // Zipalign优化
+            zipAlignEnabled true
+            // 移除无用的resource文件
+            shrinkResources true
+            //开启调试，正式打包需要关闭
+            debuggable false
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+
+            signingConfig signingConfigs.prodConfig
+        }
+        debug {
+            debuggable true
+            // applicationIdSuffix ".debug"
+            signingConfig signingConfigs.debugConfig
+
+//            firebaseCrashlytics {
+//                // If you don't need crash reporting for your debug build,
+//                // you can speed up your build by disabling mapping file uploading.
+//                mappingFileUploadEnabled false
+//            }
         }
     }
 }
@@ -31,5 +75,15 @@ dependencies {
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.3.0'
 
+    // 分包
+    implementation 'com.android.support:multidex:1.0.3'
+
     api project(path: ':CLAndroid')
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
+    implementation 'com.airbnb.android:lottie:3.4.2'
+    implementation 'com.github.svga:SVGAPlayer-Android:2.5.11'
+
+    implementation 'com.squareup.okhttp3:okhttp:4.7.2'
+    implementation 'com.google.code.gson:gson:2.8.6'
 }

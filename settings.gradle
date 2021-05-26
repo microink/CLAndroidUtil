@@ -1,3 +1,4 @@
+include ':PLog'
 include ':CLCameraX'
 include ':CLAndroid'
 include ':app'

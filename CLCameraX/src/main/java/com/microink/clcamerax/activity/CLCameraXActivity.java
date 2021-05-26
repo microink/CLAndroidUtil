@@ -415,6 +415,36 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
     }
 
     /**
+     * 获取相机可用的尺寸列表
+     * @return
+     */
+    protected Size[] getCameraSizeArray() {
+        Size[] canUseSizes = null;
+        try {
+            int cameraId = -1;
+            int numberOfCameras = android.hardware.Camera.getNumberOfCameras();
+            for (int i = 0; i <= numberOfCameras; i++) {
+                android.hardware.Camera.CameraInfo info = new android.hardware.Camera.CameraInfo();
+                android.hardware.Camera.getCameraInfo(i, info);
+                if (info.facing == android.hardware.Camera.CameraInfo.CAMERA_FACING_BACK) {
+                    cameraId = i;
+                    break;
+                }
+            }
+            CameraManager cameraManager = (CameraManager) getSystemService(Context.CAMERA_SERVICE);
+            CameraCharacteristics characteristics =
+                    cameraManager.getCameraCharacteristics(String.valueOf(cameraId));
+            StreamConfigurationMap streamConfigurationMap = characteristics.get(
+                    CameraCharacteristics.SCALER_STREAM_CONFIGURATION_MAP);
+            canUseSizes = streamConfigurationMap.getOutputSizes(ImageFormat.YUV_420_888);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return canUseSizes;
+    }
+
+    /**
      * 从PreviewView中获取到ViewPort为null的情况
      */
     protected abstract void viewPortNull();

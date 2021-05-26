@@ -58,23 +58,23 @@
 # The support library contains references to newer platform versions.
 # Don't warn about those in case this app is linking against an older
 # platform version.  We know about them, and they are safe.
--dontwarn android.support.**
+-dontwarn androidx.**
 
 # Understand the @Keep support annotation.
--keep class android.support.annotation.Keep
+-keep class androidx.annotation.Keep
 
--keep @android.support.annotation.Keep class * {*;}
+-keep @androidx.annotation.Keep class * {*;}
 
 -keepclasseswithmembers class * {
-    @android.support.annotation.Keep <methods>;
+    @androidx.annotation.Keep <methods>;
 }
 
 -keepclasseswithmembers class * {
-    @android.support.annotation.Keep <fields>;
+    @androidx.annotation.Keep <fields>;
 }
 
 -keepclasseswithmembers class * {
-    @android.support.annotation.Keep <init>(...);
+    @androidx.annotation.Keep <init>(...);
 }
 
 # 这在JSON实体映射时非常重要，比如fastJson
@@ -124,5 +124,10 @@
 -keep public class java.nio.* { *; }
 #----------okhttp end--------------
 
+# log4j2
+-keep class org.apache.logging.log4j** {*;}
+-keep interface org.apache.logging.log4j** {*;}
+
 # 自己的
 -keep class com.microink.clandroid** {*;}
+-keep interface com.microink.clandroid** {*;}

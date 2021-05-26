@@ -70,6 +70,14 @@ public class PrintLineLog {
         switchLogLevel(null, msg, V_LEVEL);
     }
 
+    public static void v(String msg, boolean saveFile) {
+        switchLogLevel(null, msg, V_LEVEL);
+
+        if (saveFile) {
+            FileLog.getInstance().v(msg);
+        }
+    }
+
     /**
      * V level prints logs
      * @param tag Tag
@@ -79,20 +87,52 @@ public class PrintLineLog {
         switchLogLevel(tag, msg, V_LEVEL);
     }
 
-    public static void v(Throwable throwable) {
-        if (!LOG_DEBUG) {
-            return;
+    public static void v(String tag, String msg, boolean saveFile) {
+        switchLogLevel(tag, msg, V_LEVEL);
+
+        if (saveFile) {
+            FileLog.getInstance().v(msg);
         }
+    }
+
+    public static void v(Throwable throwable) {
         String msg = ExceptionUtil.exceptionToString(throwable);
-        switchLogLevel(null, msg, V_LEVEL);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(null, msg, V_LEVEL);
+        }
+    }
+
+    public static void v(Throwable throwable, boolean saveFile) {
+        String msg = ExceptionUtil.exceptionToString(throwable);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(null, msg, V_LEVEL);
+        }
+
+        if (saveFile) {
+            FileLog.getInstance().v(msg);
+        }
     }
 
     public static void v(String tag, Throwable throwable) {
-        if (!LOG_DEBUG) {
-            return;
-        }
         String msg = ExceptionUtil.exceptionToString(throwable);
-        switchLogLevel(tag, msg, V_LEVEL);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(tag, msg, V_LEVEL);
+        }
+    }
+
+    public static void v(String tag, Throwable throwable, boolean saveFile) {
+        String msg = ExceptionUtil.exceptionToString(throwable);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(tag, msg, V_LEVEL);
+        }
+
+        if (saveFile) {
+            FileLog.getInstance().v(msg);
+        }
     }
 
     /**
@@ -101,6 +141,14 @@ public class PrintLineLog {
      */
     public static void d(String msg) {
         switchLogLevel(null, msg, D_LEVEL);
+    }
+
+    public static void d(String msg, boolean saveFile) {
+        switchLogLevel(null, msg, D_LEVEL);
+
+        if (saveFile) {
+            FileLog.getInstance().d(msg);
+        }
     }
 
     /**
@@ -112,20 +160,52 @@ public class PrintLineLog {
         switchLogLevel(tag, msg, D_LEVEL);
     }
 
-    public static void d(Throwable throwable) {
-        if (!LOG_DEBUG) {
-            return;
+    public static void d(String tag, String msg, boolean saveFile) {
+        switchLogLevel(tag, msg, D_LEVEL);
+
+        if (saveFile) {
+            FileLog.getInstance().d(msg);
         }
+    }
+
+    public static void d(Throwable throwable) {
         String msg = ExceptionUtil.exceptionToString(throwable);
-        switchLogLevel(null, msg, D_LEVEL);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(null, msg, D_LEVEL);
+        }
+    }
+
+    public static void d(Throwable throwable, boolean saveFile) {
+        String msg = ExceptionUtil.exceptionToString(throwable);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(null, msg, D_LEVEL);
+        }
+
+        if (saveFile) {
+            FileLog.getInstance().d(msg);
+        }
     }
 
     public static void d(String tag, Throwable throwable) {
-        if (!LOG_DEBUG) {
-            return;
-        }
         String msg = ExceptionUtil.exceptionToString(throwable);
-        switchLogLevel(tag, msg, D_LEVEL);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(tag, msg, D_LEVEL);
+        }
+    }
+
+    public static void d(String tag, Throwable throwable, boolean saveFile) {
+        String msg = ExceptionUtil.exceptionToString(throwable);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(tag, msg, D_LEVEL);
+        }
+
+        if (saveFile) {
+            FileLog.getInstance().d(msg);
+        }
     }
 
     /**
@@ -134,6 +214,14 @@ public class PrintLineLog {
      */
     public static void i(String msg) {
         switchLogLevel(null, msg, I_LEVEL);
+    }
+
+    public static void i(String msg, boolean saveFile) {
+        switchLogLevel(null, msg, I_LEVEL);
+
+        if (saveFile) {
+            FileLog.getInstance().i(msg);
+        }
     }
 
     /**
@@ -145,20 +233,52 @@ public class PrintLineLog {
         switchLogLevel(tag, msg, I_LEVEL);
     }
 
-    public static void i(Throwable throwable) {
-        if (!LOG_DEBUG) {
-            return;
+    public static void i(String tag, String msg, boolean saveFile) {
+        switchLogLevel(tag, msg, I_LEVEL);
+
+        if (saveFile) {
+            FileLog.getInstance().i(msg);
         }
+    }
+
+    public static void i(Throwable throwable) {
         String msg = ExceptionUtil.exceptionToString(throwable);
-        switchLogLevel(null, msg, I_LEVEL);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(null, msg, I_LEVEL);
+        }
+    }
+
+    public static void i(Throwable throwable, boolean saveFile) {
+        String msg = ExceptionUtil.exceptionToString(throwable);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(null, msg, I_LEVEL);
+        }
+
+        if (saveFile) {
+            FileLog.getInstance().i(msg);
+        }
     }
 
     public static void i(String tag, Throwable throwable) {
-        if (!LOG_DEBUG) {
-            return;
-        }
         String msg = ExceptionUtil.exceptionToString(throwable);
-        switchLogLevel(tag, msg, I_LEVEL);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(tag, msg, I_LEVEL);
+        }
+    }
+
+    public static void i(String tag, Throwable throwable, boolean saveFile) {
+        String msg = ExceptionUtil.exceptionToString(throwable);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(tag, msg, I_LEVEL);
+        }
+
+        if (saveFile) {
+            FileLog.getInstance().i(msg);
+        }
     }
 
     /**
@@ -167,6 +287,14 @@ public class PrintLineLog {
      */
     public static void w(String msg) {
         switchLogLevel(null, msg, W_LEVEL);
+    }
+
+    public static void w(String msg, boolean saveFile) {
+        switchLogLevel(null, msg, W_LEVEL);
+
+        if (saveFile) {
+            FileLog.getInstance().w(msg);
+        }
     }
 
     /**
@@ -178,20 +306,52 @@ public class PrintLineLog {
         switchLogLevel(tag, msg, W_LEVEL);
     }
 
-    public static void w(Throwable throwable) {
-        if (!LOG_DEBUG) {
-            return;
+    public static void w(String tag, String msg, boolean saveFile) {
+        switchLogLevel(tag, msg, W_LEVEL);
+
+        if (saveFile) {
+            FileLog.getInstance().w(msg);
         }
+    }
+
+    public static void w(Throwable throwable) {
         String msg = ExceptionUtil.exceptionToString(throwable);
-        switchLogLevel(null, msg, W_LEVEL);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(null, msg, W_LEVEL);
+        }
+    }
+
+    public static void w(Throwable throwable, boolean saveFile) {
+        String msg = ExceptionUtil.exceptionToString(throwable);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(null, msg, W_LEVEL);
+        }
+
+        if (saveFile) {
+            FileLog.getInstance().w(msg);
+        }
     }
 
     public static void w(String tag, Throwable throwable) {
-        if (!LOG_DEBUG) {
-            return;
-        }
         String msg = ExceptionUtil.exceptionToString(throwable);
-        switchLogLevel(tag, msg, W_LEVEL);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(tag, msg, W_LEVEL);
+        }
+    }
+
+    public static void w(String tag, Throwable throwable, boolean saveFile) {
+        String msg = ExceptionUtil.exceptionToString(throwable);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(tag, msg, W_LEVEL);
+        }
+
+        if (saveFile) {
+            FileLog.getInstance().w(msg);
+        }
     }
 
     /**
@@ -200,6 +360,14 @@ public class PrintLineLog {
      */
     public static void e(String msg) {
         switchLogLevel(null, msg, E_LEVEL);
+    }
+
+    public static void e(String msg, boolean saveFile) {
+        switchLogLevel(null, msg, E_LEVEL);
+
+        if (saveFile) {
+            FileLog.getInstance().e(msg);
+        }
     }
 
     /**
@@ -211,20 +379,52 @@ public class PrintLineLog {
         switchLogLevel(tag, msg, E_LEVEL);
     }
 
-    public static void e(Throwable throwable) {
-        if (!LOG_DEBUG) {
-            return;
+    public static void e(String tag, String msg, boolean saveFile) {
+        switchLogLevel(tag, msg, E_LEVEL);
+
+        if (saveFile) {
+            FileLog.getInstance().e(msg);
         }
+    }
+
+    public static void e(Throwable throwable) {
         String msg = ExceptionUtil.exceptionToString(throwable);
-        switchLogLevel(null, msg, E_LEVEL);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(null, msg, E_LEVEL);
+        }
+    }
+
+    public static void e(Throwable throwable, boolean saveFile) {
+        String msg = ExceptionUtil.exceptionToString(throwable);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(null, msg, E_LEVEL);
+        }
+
+        if (saveFile) {
+            FileLog.getInstance().e(msg);
+        }
     }
 
     public static void e(String tag, Throwable throwable) {
-        if (!LOG_DEBUG) {
-            return;
-        }
         String msg = ExceptionUtil.exceptionToString(throwable);
-        switchLogLevel(tag, msg, E_LEVEL);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(tag, msg, E_LEVEL);
+        }
+    }
+
+    public static void e(String tag, Throwable throwable, boolean saveFile) {
+        String msg = ExceptionUtil.exceptionToString(throwable);
+
+        if (LOG_DEBUG) {
+            switchLogLevel(tag, msg, E_LEVEL);
+        }
+
+        if (saveFile) {
+            FileLog.getInstance().e(msg);
+        }
     }
 
     /**

@@ -1,10 +1,14 @@
 package com.microink.clandroidutil;
 
 import android.app.Application;
+import android.content.Context;
 
+import com.microink.clandroid.CLAndroidUtil;
 import com.microink.clandroid.android.executor.AppExecutors;
 
 import java.util.concurrent.Executor;
+
+import androidx.multidex.MultiDex;
 
 /**
  * @author Cass
@@ -26,6 +30,15 @@ public class App extends Application {
         sInstance = this;
 
         initExecutors();
+
+        CLAndroidUtil.init(this);
+    }
+
+    @Override
+    protected void attachBaseContext(Context base) {
+
+        super.attachBaseContext(base);
+        MultiDex.install(this);
     }
 
     public static App getInstance() {
