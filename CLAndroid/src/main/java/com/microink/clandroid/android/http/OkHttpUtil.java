@@ -103,11 +103,12 @@ public class OkHttpUtil {
 
             OkHttpClient.Builder builder = new OkHttpClient.Builder();
 
-            if (Build.VERSION.SDK_INT < 29) {
+            if (Build.VERSION.SDK_INT < 28) {
                 builder.sslSocketFactory(sslSocketFactory);
             } else {
                 builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
             }
+            //builder.sslSocketFactory(sslSocketFactory, (X509TrustManager) trustAllCerts[0]);
 
             okHttpClient = builder.readTimeout(CONNECT_TIME, TimeUnit.MILLISECONDS)
                     .connectTimeout(CONNECT_TIME, TimeUnit.MILLISECONDS).hostnameVerifier(new HostnameVerifier() {

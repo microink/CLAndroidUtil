@@ -539,7 +539,12 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
             if (!cameraPermissionOpen) {
                 ActivityCompat.requestPermissions(this, permissions, PERMISSION_CAMERA_CODE);
             } else {
-                initCameraPreviewSize(resizePreviewViewWidthHeight());
+                mPreviewView.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        initCameraPreviewSize(resizePreviewViewWidthHeight());
+                    }
+                });
             }
         }
     }
