@@ -291,6 +291,14 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
                     return;
                 }
                 realImage.setCropRect(rect);
+                if (0 >= rect.width() || 0 >= rect.height()) {
+                    try {
+                        image.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    return;
+                }
                 Bitmap bitmap = Bitmap.createBitmap(rect.width(), rect.height(),
                         Bitmap.Config.ARGB_8888);
                 yuvToRgbConverter.yuvToRgb(image.getImage(), bitmap);
@@ -533,6 +541,9 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
         if (PERMISSION_CAMERA_CODE == requestCode) {
+            if (null == permissions || 0 == permissions.length) {
+                return;
+            }
             boolean cameraPermissionOpen =
                     PackageManager.PERMISSION_GRANTED == ContextCompat.checkSelfPermission(this,
                             permissions[0]);

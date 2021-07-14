@@ -31,7 +31,7 @@ public class App extends Application {
 
         initExecutors();
 
-        CLAndroidUtil.init(this);
+        CLAndroidUtil.init(this, true, true);
     }
 
     @Override

@@ -174,8 +174,15 @@ public class CLCrashHandler implements Thread.UncaughtExceptionHandler {
             if (!dir.exists()) {
                 dir.mkdirs();
             } else {
-                dir.delete();
-                dir.mkdirs();
+                try {
+                    if (dir.exists()) {
+                        for (File listFile : dir.listFiles()) {
+                            listFile.delete();
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
             FileOutputStream fos = new FileOutputStream(savePath + fileName);
             fos.write(sb.toString().getBytes());

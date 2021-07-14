@@ -150,7 +150,6 @@ public class ViewUtil {
         }
         int color = textView.getCurrentTextColor();
         int newColor = Color.parseColor("#2684FF");
-        ;
         int[] pressed = new int[]{android.R.attr.state_pressed,
                 android.R.attr.state_enabled};
         int[] normal = new int[] {-android.R.attr.state_pressed};
