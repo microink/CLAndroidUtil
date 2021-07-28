@@ -165,16 +165,16 @@ public class StatusBarUtil {
     public static int setStatusBarLightMode(Activity activity){
         int result = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if(setMIUISetStatusBarLightMode(activity.getWindow(), true)){
-                result = 1;
-            } else if (setFlymeSetStatusBarLightMode(activity.getWindow(), true)){
-                result = 2;
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 int visibility = activity.getWindow().getDecorView().getSystemUiVisibility();
                 visibility |= View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN;
                 visibility |= View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR;
                 activity.getWindow().getDecorView().setSystemUiVisibility(visibility);
                 result = 3;
+            } else if(setMIUISetStatusBarLightMode(activity.getWindow(), true)){
+                result = 1;
+            } else if (setFlymeSetStatusBarLightMode(activity.getWindow(), true)){
+                result = 2;
             }
         }
         return result;
@@ -210,15 +210,15 @@ public class StatusBarUtil {
     public static int setStatusBarDarkMode(Activity activity) {
         int result = 0;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            if (setMIUISetStatusBarLightMode(activity.getWindow(), false)) {
-                result = 1;
-            } else if (setFlymeSetStatusBarLightMode(activity.getWindow(), false)) {
-                result = 2;
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                 int visibility = activity.getWindow().getDecorView().getSystemUiVisibility();
                 visibility |= View.SYSTEM_UI_FLAG_VISIBLE;
                 activity.getWindow().getDecorView().setSystemUiVisibility(visibility);
                 result = 3;
+            } else if (setMIUISetStatusBarLightMode(activity.getWindow(), false)) {
+                result = 1;
+            } else if (setFlymeSetStatusBarLightMode(activity.getWindow(), false)) {
+                result = 2;
             }
         }
         return result;

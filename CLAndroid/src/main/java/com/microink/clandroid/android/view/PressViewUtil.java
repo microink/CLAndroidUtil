@@ -11,6 +11,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -56,15 +57,15 @@ public class PressViewUtil {
     }
 
     /**
-     * 给TextView的设置了背景单张图片，设置点击效果
+     * 给View的设置了背景单张图片，设置点击效果
      * @param context
-     * @param textView
+     * @param view
      */
-    public static void textViewBGImgPress(Context context, TextView textView) {
-        if (null == context || null == textView) {
+    public static void viewBGImgPress(Context context, View view) {
+        if (null == context || null == view) {
             return;
         }
-        Drawable drawable = textView.getBackground();
+        Drawable drawable = view.getBackground();
         if (!(drawable instanceof BitmapDrawable)) {
             return;
         }
@@ -82,7 +83,36 @@ public class PressViewUtil {
         bg.addState(new int[] { android.R.attr.state_enabled }, normal);
         // View.EMPTY_STATE_SET
         bg.addState(new int[] {}, normal);
-        textView.setBackground(bg);
+        view.setBackground(bg);
+    }
+
+    /**
+     * 给View设置背景颜色，设置点击效果
+     * @param context
+     * @param view
+     */
+    public static void viewBGColorPress(Context context, View view) {
+        if (null == context || null == view) {
+            return;
+        }
+        Drawable drawable = view.getBackground();
+        if (!(drawable instanceof ColorDrawable)) {
+            return;
+        }
+
+        ColorDrawable colorDrawable = (ColorDrawable) drawable;
+        int color = colorDrawable.getColor();
+        int backgroundColor = color;
+        int newColor = ColorUtil.getCurrentColor(backgroundColor,
+                Color.parseColor("#778899"), 0.4f);
+        ColorDrawable newColorDrawable = (ColorDrawable) colorDrawable
+                .getConstantState().newDrawable().mutate();
+        newColorDrawable.setColor(newColor);
+        StateListDrawable stateListDrawable = new StateListDrawable();
+        stateListDrawable.addState(new int[] {android.R.attr.state_pressed,
+                android.R.attr.state_enabled}, newColorDrawable);
+        stateListDrawable.addState(new int[] {-android.R.attr.state_pressed}, colorDrawable);
+        view.setBackground(stateListDrawable);
     }
 
     /**

@@ -2,8 +2,11 @@ package com.microink.clandroid.android.screen;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.Configuration;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
+import android.view.Display;
+import android.view.WindowManager;
 
 /**
  * @author Cass
@@ -101,5 +104,34 @@ public class ScreenUtil {
     public static int pxToDp(Context context, int pxValue) {
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (pxValue / scale + 0.5f);
+    }
+
+    /**
+     * 获取屏幕英寸数
+     * @param context
+     * @return
+     */
+    public static float screenSizeInch(Context context) {
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        Display display = wm.getDefaultDisplay();
+        DisplayMetrics dm = new DisplayMetrics();
+        display.getMetrics(dm);
+        double x = Math.pow(dm.widthPixels / dm.xdpi, 2);
+        double y = Math.pow(dm.heightPixels / dm.ydpi, 2);
+        // 屏幕尺寸
+        double screenInches = Math.sqrt(x + y);
+
+        return (float) screenInches;
+    }
+
+    /**
+     * Google官方的判断是否是平板的方法，不能兼容全部
+     * @param context
+     * @return
+     */
+    public static boolean isPadFromGoogle(Context context) {
+        return (context.getResources().getConfiguration().screenLayout
+                & Configuration.SCREENLAYOUT_SIZE_MASK)
+                >= Configuration.SCREENLAYOUT_SIZE_LARGE;
     }
 }

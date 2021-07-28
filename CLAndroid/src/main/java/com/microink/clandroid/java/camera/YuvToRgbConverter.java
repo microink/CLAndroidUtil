@@ -36,7 +36,7 @@ public class YuvToRgbConverter {
         scriptYuvToRgb = ScriptIntrinsicYuvToRGB.create(rs, Element.U8_4(rs));
     }
 
-    public synchronized void yuvToRgb(Image image, Bitmap output) {
+    public synchronized void yuvToRgb(Image image, Bitmap output, Rect rect) {
         // Ensure that the intermediate output byte buffer is allocated
         if (null == yuvBuffer) {
             pixelCount = image.getCropRect().width() * image.getCropRect().height();
@@ -48,7 +48,7 @@ public class YuvToRgbConverter {
         // Rewind the buffer; no need to clear it since it will be filled
         yuvBuffer.rewind();
         // Get the YUV data in byte array form using NV21 format
-        imageToByteBuffer(image, yuvBuffer.array());
+        imageToByteBuffer(image, yuvBuffer.array(), rect);
 
         // Ensure that the RenderScript inputs and outputs are allocated
         if (null == inputAllocation) {
@@ -69,10 +69,10 @@ public class YuvToRgbConverter {
         outputAllocation.copyTo(output);
     }
 
-    private void imageToByteBuffer(Image image, byte[] outputBuffer) {
+    private void imageToByteBuffer(Image image, byte[] outputBuffer, Rect rect) {
         assert(image.getFormat() == ImageFormat.YUV_420_888);
 
-        Rect imageCrop = image.getCropRect();
+        Rect imageCrop = rect;
         Image.Plane[] imagePlanes = image.getPlanes();
         for (int i = 0; i < imagePlanes.length; i++) {
             int planeIndex = i;

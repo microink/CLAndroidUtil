@@ -217,7 +217,7 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
                 .setFlashMode(ImageCapture.FLASH_MODE_AUTO)
                 // 默认拍照最高大小
                 //.setTargetResolution(captureSize)
-                .setTargetRotation(mPreviewView.getDisplay().getRotation())
+                //.setTargetRotation(mPreviewView.getDisplay().getRotation())
                 // 最高质量，但是拍摄延迟高
                 .setCaptureMode(ImageCapture.CAPTURE_MODE_MAXIMIZE_QUALITY);
         // 最快速度，但是质量可能低
@@ -246,7 +246,7 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
                 new ImageAnalysis.Builder()
                         .setTargetResolution(chooseSize)
                         //.setTargetAspectRatio(AspectRatio.RATIO_4_3)
-                        .setTargetRotation(mPreviewView.getDisplay().getRotation())
+                        //.setTargetRotation(mPreviewView.getDisplay().getRotation())
                         .setBackpressureStrategy(ImageAnalysis.STRATEGY_KEEP_ONLY_LATEST)
                         .build();
 
@@ -290,7 +290,7 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
                     image.close();
                     return;
                 }
-                realImage.setCropRect(rect);
+                //realImage.setCropRect(rect);
                 if (0 >= rect.width() || 0 >= rect.height()) {
                     try {
                         image.close();
@@ -301,9 +301,9 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
                 }
                 Bitmap bitmap = Bitmap.createBitmap(rect.width(), rect.height(),
                         Bitmap.Config.ARGB_8888);
-                yuvToRgbConverter.yuvToRgb(image.getImage(), bitmap);
+                yuvToRgbConverter.yuvToRgb(image.getImage(), bitmap, rect);
 
-                bitmap = BitmapUtil.rotateBitmap(bitmap, 90, true);
+                bitmap = BitmapUtil.rotateBitmap(bitmap, 90, false);
 
                 long useTime = System.currentTimeMillis() - time;
                 convertYUVRotateBitmapTime(useTime);
