@@ -71,6 +71,10 @@ public class TestView extends ConstraintLayout implements View.OnClickListener {
         if (!isTest) {
             return;
         }
+        if (SharedPreferenceUtil.getBoolean(activity, SharedPreferenceUtil.CL_ANDROID,
+                TestValue.PREFERENCE_KEY_FINAL_HIDE, false)) {
+            return;
+        }
         if (null == activity) {
             return;
         }
@@ -103,6 +107,16 @@ public class TestView extends ConstraintLayout implements View.OnClickListener {
         } else {
             // 说明现在是显示视图的
         }
+    }
+
+    /**
+     * 设置显示或者隐藏Config，隐藏后完全隐藏，不再显示闪烁动画
+     * @param context
+     * @param isShow
+     */
+    public static void setShowConfig(Context context, boolean isShow) {
+        SharedPreferenceUtil.saveBoolean(context, SharedPreferenceUtil.CL_ANDROID,
+                TestValue.PREFERENCE_KEY_FINAL_HIDE, !isShow);
     }
 
     /**

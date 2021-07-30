@@ -11,4 +11,7 @@ public class TestValue {
 
     // 用于是否隐藏测试显示视图的Preference的Key
     public static final String PREFERENCE_KEY_HIDE = "testViewHide";
+
+    // 用于是否完全隐藏测试显示视图的Preference的Key
+    public static final String PREFERENCE_KEY_FINAL_HIDE = "testViewFinalHide";
 }
