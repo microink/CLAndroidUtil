@@ -426,6 +426,42 @@ public class OkHttpUtil {
     }
 
     /**
+     * 根据url和参数请求接口 返回String
+     * 异步回调
+     * @param url
+     * @param paramsMap
+     * @param callback
+     * @throws JSONException
+     */
+    private static void pullJsonRequestStringDataAsync(String url, Map<String, String> headers,
+            Map<String, String> paramsMap,
+            final OkHttpUtilStringCallback callback) {
+
+        Request request = getJsonRequest(url, headers, paramsMap);
+        OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
+                callback.onFailed(ON_FAILED_CODE, e, call);
+            }
+
+            @Override
+            public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
+                String responseStr = "";
+                final int code = response.code();
+                try {
+                    responseStr = response.body().string();
+                } catch (final Exception e) {
+                    callback.onFailed(code, e, null);
+                    return;
+                }
+                String finalResponseStr = responseStr;
+                callback.onResponse(code, finalResponseStr, call);
+            }
+        });
+    }
+
+    /**
      * 根据url和参数请求表单接口
      * @param url
      * @return
@@ -514,6 +550,42 @@ public class OkHttpUtil {
                         callback.onResponse(code, finalResponseStr, call);
                     }
                 });
+            }
+        });
+    }
+
+    /**
+     * 根据url和参数请求接口 返回String
+     * 异步回调
+     * @param url
+     * @param paramsMap
+     * @param callback
+     * @throws JSONException
+     */
+    private static void pullFormRequestStringDataAsync(String url, Map<String, String> headers,
+            Map<String, String> paramsMap,
+            final OkHttpUtilStringCallback callback) {
+
+        Request request = getFormRequest(url, headers, paramsMap);
+        OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
+                callback.onFailed(ON_FAILED_CODE, e, call);
+            }
+
+            @Override
+            public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
+                String responseStr = "";
+                final int code = response.code();
+                try {
+                    responseStr = response.body().string();
+                } catch (final Exception e) {
+                    callback.onFailed(code, e, null);
+                    return;
+                }
+                String finalResponseStr = responseStr;
+                callback.onResponse(code, finalResponseStr, call);
             }
         });
     }

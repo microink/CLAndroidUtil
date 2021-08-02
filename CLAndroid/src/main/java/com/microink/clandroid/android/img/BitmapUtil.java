@@ -4,6 +4,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Rect;
+import android.text.TextUtils;
+
+import com.microink.clandroid.android.log.PrintLineLog;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * @author Cass
@@ -79,5 +86,38 @@ public class BitmapUtil {
             return scaledBitmap;
         }
         return bm;
+    }
+
+    /**
+     * 将Bitmap保存为本地文件，用以上传
+     */
+    public static void saveBitmapToFile(Bitmap bitmap, String path, int quality)
+            throws IOException{
+        if (null == bitmap || 0 == bitmap.getWidth() || 0 == bitmap.getHeight() ||
+                TextUtils.isEmpty(path)) {
+            return;
+        }
+        if (TextUtils.isEmpty(path)) {
+            return;
+        }
+        if (0 > quality) {
+            quality = 1;
+        } else if (100 < quality) {
+            quality = 100;
+        }
+        File saveFile = new File(path);
+        FileOutputStream saveImgOut = new FileOutputStream(saveFile);
+        // compress - 压缩的意思
+        bitmap.compress(Bitmap.CompressFormat.JPEG, quality, saveImgOut);
+        // 存储完成后需要清除相关流
+        saveImgOut.flush();
+        saveImgOut.close();
+    }
+
+    /**
+     * 将Bitmap保存为本地文件，用以上传
+     */
+    public static void saveBitmapToFile(Bitmap bitmap, String path) throws IOException{
+        saveBitmapToFile(bitmap, path, 100);
     }
 }
