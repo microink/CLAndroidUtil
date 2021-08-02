@@ -39,7 +39,7 @@ public class YuvToRgbConverter {
     public synchronized void yuvToRgb(Image image, Bitmap output, Rect rect) {
         // Ensure that the intermediate output byte buffer is allocated
         if (null == yuvBuffer) {
-            pixelCount = image.getCropRect().width() * image.getCropRect().height();
+            pixelCount = rect.width() * rect.height();
             // Bits per pixel is an average for the whole image, so it's useful to compute the size
             // of the full buffer but should not be used to determine pixel offsets
             int pixelSizeBits = ImageFormat.getBitsPerPixel(ImageFormat.YUV_420_888);
