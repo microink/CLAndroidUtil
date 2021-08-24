@@ -116,12 +116,14 @@ public class LottieActivity extends AppCompatActivity implements View.OnClickLis
                 OkHttpUtil.OkHttpUtilBuilder.requestUlr(url);
         builder.postJsonRequestCallString(new OkHttpUtil.OkHttpUtilStringCallback() {
             @Override
-            public void onFailed(int code, Exception e, @Nullable okhttp3.Call call) {
+            public void onFailed(int code, Exception e, long useTime,
+                    @Nullable okhttp3.Call call) {
                 Log.i("LottieActivity", "onFailed()");
             }
 
             @Override
-            public void onResponse(int code, String response, @Nullable okhttp3.Call call) {
+            public void onResponse(int code, String response, long useTime,
+                    @Nullable okhttp3.Call call) {
                 Log.i("LottieActivity", "onResponse()");
             }
         });

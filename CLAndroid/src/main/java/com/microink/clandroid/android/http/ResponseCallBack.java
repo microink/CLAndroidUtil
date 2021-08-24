@@ -17,7 +17,8 @@ import okhttp3.Call;
  */
 public abstract class ResponseCallBack<T> extends AbsCallback<T> {
 
-    public void parseNetworkResponseStr(final int code, final String data, final Call call) throws Exception{
+    public void parseNetworkResponseStr(final int code, final String data,
+            final long useTime, final Call call) throws Exception{
         Type type = this.getClass().getGenericSuperclass();
         if (type instanceof ParameterizedType) {
             //如果写了泛型，就会进入这里，否者不会执行
@@ -28,7 +29,7 @@ public abstract class ResponseCallBack<T> extends AbsCallback<T> {
             OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                 @Override
                 public void run() {
-                    onResponse(code, result, data, call);
+                    onResponse(code, result, data, useTime, call);
                 }
             });
         } else {
@@ -36,7 +37,7 @@ public abstract class ResponseCallBack<T> extends AbsCallback<T> {
             OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                 @Override
                 public void run() {
-                    onFailed(code, new Exception("must write type class"), data, call);
+                    onFailed(code, new Exception("must write type class"), data, useTime, call);
                 }
             });
         }

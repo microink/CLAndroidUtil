@@ -183,7 +183,7 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
         initCamera();
     }
 
-    private void initCamera() {
+    protected void initCamera() {
         final ListenableFuture<ProcessCameraProvider> cameraProviderFuture =
                 ProcessCameraProvider.getInstance(mBaseActivity);
 
@@ -310,7 +310,7 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
 
                 if (isPause) {
                     if (null != bitmap) {
-                        bitmap.recycle();
+                        //bitmap.recycle();
                     }
                     image.close();
                 }
@@ -496,7 +496,7 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
             }
         }
         if (null != handleBitmap) {
-            handleBitmap.recycle();
+            //handleBitmap.recycle();
             handleBitmap = null;
         }
     }
@@ -588,12 +588,12 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
                 resultView.draw(canvas);
                 Bitmap cameraBitmap = mPreviewView.getBitmap();
                 Bitmap mergeBitmap = BitmapUtil.mergeOnBackRectBitmap(cameraBitmap, bitmap);
-                try {
-                    bitmap.recycle();
-                    cameraBitmap.recycle();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                //try {
+                //    bitmap.recycle();
+                //    cameraBitmap.recycle();
+                //} catch (Exception e) {
+                //    e.printStackTrace();
+                //}
 
                 if (null != mIVPause) {
                     mIVPause.setImageBitmap(mergeBitmap);
@@ -647,7 +647,12 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
                     @Override
                     public void onImageSaved(
                             @NonNull ImageCapture.OutputFileResults outputFileResults) {
-                        customLifecycle.doOnStop();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                customLifecycle.doOnStop();
+                            }
+                        });
                         try {
                             Bitmap bitmap = BitmapFactory.decodeFile(path);
                             if (null == bitmap) {

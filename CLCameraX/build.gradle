@@ -23,6 +23,13 @@ android {
             consumerProguardFiles 'consumer-rules.pro'
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        release {
+            // 开启混淆
+            minifyEnabled false
+            consumerProguardFiles 'consumer-rules.pro'
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7

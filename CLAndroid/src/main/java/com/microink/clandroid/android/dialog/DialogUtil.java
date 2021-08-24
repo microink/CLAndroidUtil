@@ -34,6 +34,13 @@ public class DialogUtil {
      */
     public static void showProgressDialog(Activity activity) {
         if (null != activity && !activity.isFinishing()) {
+            if (null != sProgressDialog && sProgressDialog.isShowing()) {
+                try {
+                    sProgressDialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             sProgressDialog = new SingleColorProgressDialog(
                     activity.getWindow().getDecorView().getSystemUiVisibility(),
                     activity);
@@ -53,6 +60,13 @@ public class DialogUtil {
      */
     public static void showProgressWithTextDialog(Activity activity, String text) {
         if (null != activity && !activity.isFinishing()) {
+            if (null != sProgressWithTextDialog && sProgressWithTextDialog.isShowing()) {
+                try {
+                    sProgressWithTextDialog.dismiss();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
             sProgressWithTextDialog = new SingleColorWithTextProgressDialog(
                     activity.getWindow().getDecorView().getSystemUiVisibility(),
                     activity);

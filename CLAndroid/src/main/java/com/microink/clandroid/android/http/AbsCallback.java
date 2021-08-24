@@ -14,7 +14,7 @@ import okhttp3.Call;
 public abstract class AbsCallback <T>{
 
     public abstract void onFailed(int code, Exception e,
-            @Nullable String responseStr, @Nullable Call call);
+            @Nullable String responseStr, long useTime, @Nullable Call call);
     public abstract void onResponse(int code, @NonNull T response,
-            String responseStr, @Nullable Call call);
+            String responseStr, long useTime, @Nullable Call call);
 }
