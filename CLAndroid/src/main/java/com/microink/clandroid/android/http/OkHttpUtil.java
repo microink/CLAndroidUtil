@@ -6,6 +6,9 @@ import android.os.Looper;
 import android.text.TextUtils;
 import android.util.Log;
 
+import com.microink.clandroid.android.log.PrintLineLog;
+import com.microink.clandroid.java.exception.ExceptionUtil;
+
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -154,6 +157,9 @@ public class OkHttpUtil {
             final ResponseCallBack<T> callback){
 
         Request request = getJsonRequest(url, headers, paramsMap);
+        PrintLineLog.i("pullJsonRequestData url= " + url);
+        PrintLineLog.i("pullJsonRequestData headers= " + getMapString(headers));
+        PrintLineLog.i("pullJsonRequestData params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
         OkHttpUtil.getInstance().getOkHttpClient()
                 .newCall(request).enqueue(new Callback() {
@@ -267,6 +273,9 @@ public class OkHttpUtil {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.e("pull onFailure useTime= " + useTime);
+                PrintLineLog.e("pull onFailure Exception= " +
+                        ExceptionUtil.exceptionToString(e));
                 OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                     @Override
                     public void run() {
@@ -278,13 +287,17 @@ public class OkHttpUtil {
             @Override
             public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.i("pull onResponse useTime= " + useTime);
                 String responseStr = "";
                 final int code = response.code();
                 try {
                     responseStr = response.body().string();
+                    PrintLineLog.i("pull onResponse result= " + responseStr);
                     callback.parseNetworkResponseStr(code, responseStr, useTime, call);
                 } catch (final Exception e) {
                     final String finalResponseStr = responseStr;
+                    PrintLineLog.e("pull onResponse Exception code= " + code + " Exception=" +
+                            ExceptionUtil.exceptionToString(e));
                     OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                         @Override
                         public void run() {
@@ -314,6 +327,9 @@ public class OkHttpUtil {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.e("pull onFailure useTime= " + useTime);
+                PrintLineLog.e("pull onFailure Exception= " +
+                        ExceptionUtil.exceptionToString(e));
                 OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                     @Override
                     public void run() {
@@ -325,11 +341,14 @@ public class OkHttpUtil {
             @Override
             public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.i("pull onResponse useTime= " + useTime);
                 String responseStr = "";
                 final int code = response.code();
                 try {
                     responseStr = response.body().string();
                 } catch (final Exception e) {
+                    PrintLineLog.e("pull onResponse Exception code= " + code + " Exception=" +
+                            ExceptionUtil.exceptionToString(e));
                     OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                         @Override
                         public void run() {
@@ -339,6 +358,7 @@ public class OkHttpUtil {
                     return;
                 }
                 final String finalResponseStr = responseStr;
+                PrintLineLog.i("pull onResponse result= " + responseStr);
                 OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                     @Override
                     public void run() {
@@ -357,6 +377,8 @@ public class OkHttpUtil {
      */
     private static Request getUploadFileRequest(String url, Map<String, String> headers,
             Map<String, RequestFileBean> paramsFileMap) {
+        PrintLineLog.i("pullDownloadFile url= " + url);
+        PrintLineLog.i("pullDownloadFile headers= " + getMapString(headers));
         MultipartBody.Builder multipartBodyBuild = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
         File uploadFile = null;
@@ -367,9 +389,13 @@ public class OkHttpUtil {
             if (!TextUtils.isEmpty(filePath)) {
                 uploadFile = new File(filePath);
                 fileBean = requestFileBean;
+                PrintLineLog.i("pullDownloadFile uploadFile= " +
+                        uploadFile.getAbsolutePath());
             } else {
                 multipartBodyBuild.addFormDataPart(requestFileBean.getName(),
                         requestFileBean.getFileName());
+                PrintLineLog.i("pullDownloadFile addFormDataPart= " +
+                        requestFileBean.getName() + ":" + requestFileBean.getFileName());
             }
         }
         if (null != fileBean) {
@@ -384,6 +410,7 @@ public class OkHttpUtil {
         Request request = builder.url(url)
                 .post(requestBody)
                 .build();
+
         return request;
     }
 
@@ -399,12 +426,18 @@ public class OkHttpUtil {
             final OkHttpUtilStringCallback callback) {
 
         Request request = getJsonRequest(url, headers, paramsMap);
+        PrintLineLog.i("pull url= " + url);
+        PrintLineLog.i("pull headers= " + getMapString(headers));
+        PrintLineLog.i("pull params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
         OkHttpUtil.getInstance().getOkHttpClient()
                 .newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.e("pull onFailure useTime= " + useTime);
+                PrintLineLog.e("pull onFailure Exception= " +
+                        ExceptionUtil.exceptionToString(e));
                 OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                     @Override
                     public void run() {
@@ -416,11 +449,14 @@ public class OkHttpUtil {
             @Override
             public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.i("pull onResponse useTime= " + useTime);
                 String responseStr = "";
                 final int code = response.code();
                 try {
                     responseStr = response.body().string();
                 } catch (final Exception e) {
+                    PrintLineLog.e("pull onResponse Exception code= " + code + " Exception=" +
+                            ExceptionUtil.exceptionToString(e));
                     OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                         @Override
                         public void run() {
@@ -430,6 +466,7 @@ public class OkHttpUtil {
                     return;
                 }
                 final String finalResponseStr = responseStr;
+                PrintLineLog.i("pull onResponse result= " + responseStr);
                 OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                     @Override
                     public void run() {
@@ -453,27 +490,37 @@ public class OkHttpUtil {
             final OkHttpUtilStringCallback callback) {
 
         Request request = getJsonRequest(url, headers, paramsMap);
+        PrintLineLog.i("pull url= " + url);
+        PrintLineLog.i("pull headers= " + getMapString(headers));
+        PrintLineLog.i("pull params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
         OkHttpUtil.getInstance().getOkHttpClient()
                 .newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.e("pull onFailure useTime= " + useTime);
+                PrintLineLog.e("pull onFailure Exception= " +
+                        ExceptionUtil.exceptionToString(e));
                 callback.onFailed(ON_FAILED_CODE, e, useTime, call);
             }
 
             @Override
             public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
                 long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.i("pull onResponse useTime= " + useTime);
                 String responseStr = "";
                 final int code = response.code();
                 try {
                     responseStr = response.body().string();
                 } catch (final Exception e) {
+                    PrintLineLog.e("pull onResponse Exception code= " + code + " Exception=" +
+                            ExceptionUtil.exceptionToString(e));
                     callback.onFailed(code, e, useTime, null);
                     return;
                 }
                 String finalResponseStr = responseStr;
+                PrintLineLog.i("pull onResponse result= " + responseStr);
                 callback.onResponse(code, finalResponseStr, useTime, call);
             }
         });
@@ -489,12 +536,18 @@ public class OkHttpUtil {
             final ResponseCallBack<T> callback){
 
         Request request = getFormRequest(url, headers, paramsMap);
+        PrintLineLog.i("pull url= " + url);
+        PrintLineLog.i("pull headers= " + getMapString(headers));
+        PrintLineLog.i("pull params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
         OkHttpUtil.getInstance().getOkHttpClient()
                 .newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.e("pull onFailure useTime= " + useTime);
+                PrintLineLog.e("pull onFailure Exception= " +
+                        ExceptionUtil.exceptionToString(e));
                 OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                     @Override
                     public void run() {
@@ -506,13 +559,17 @@ public class OkHttpUtil {
             @Override
             public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.i("pull onResponse useTime= " + useTime);
                 String responseStr = "";
                 final int code = response.code();
                 try {
                     responseStr = response.body().string();
+                    PrintLineLog.i("pull onResponse result= " + responseStr);
                     callback.parseNetworkResponseStr(code, responseStr, useTime, call);
                 } catch (final Exception e) {
                     final String finalResponseStr = responseStr;
+                    PrintLineLog.e("pull onResponse Exception code= " + code + " Exception=" +
+                            ExceptionUtil.exceptionToString(e));
                     OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                         @Override
                         public void run() {
@@ -537,12 +594,18 @@ public class OkHttpUtil {
             final OkHttpUtilStringCallback callback) {
 
         Request request = getFormRequest(url, headers, paramsMap);
+        PrintLineLog.i("pull url= " + url);
+        PrintLineLog.i("pull headers= " + getMapString(headers));
+        PrintLineLog.i("pull params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
         OkHttpUtil.getInstance().getOkHttpClient()
                 .newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.e("pull onFailure useTime= " + useTime);
+                PrintLineLog.e("pull onFailure Exception= " +
+                        ExceptionUtil.exceptionToString(e));
                 OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                     @Override
                     public void run() {
@@ -554,11 +617,14 @@ public class OkHttpUtil {
             @Override
             public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.i("pull onResponse useTime= " + useTime);
                 String responseStr = "";
                 final int code = response.code();
                 try {
                     responseStr = response.body().string();
                 } catch (final Exception e) {
+                    PrintLineLog.e("pull onResponse Exception code= " + code + " Exception=" +
+                            ExceptionUtil.exceptionToString(e));
                     OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                         @Override
                         public void run() {
@@ -568,6 +634,7 @@ public class OkHttpUtil {
                     return;
                 }
                 final String finalResponseStr = responseStr;
+                PrintLineLog.i("pull onResponse result= " + responseStr);
                 OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                     @Override
                     public void run() {
@@ -591,27 +658,37 @@ public class OkHttpUtil {
             final OkHttpUtilStringCallback callback) {
 
         Request request = getFormRequest(url, headers, paramsMap);
+        PrintLineLog.i("pull url= " + url);
+        PrintLineLog.i("pull headers= " + getMapString(headers));
+        PrintLineLog.i("pull params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
         OkHttpUtil.getInstance().getOkHttpClient()
                 .newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.e("pull onFailure useTime= " + useTime);
+                PrintLineLog.e("pull onFailure Exception= " +
+                        ExceptionUtil.exceptionToString(e));
                 callback.onFailed(ON_FAILED_CODE, e, useTime, call);
             }
 
             @Override
             public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
                 long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.i("pull onResponse useTime= " + useTime);
                 String responseStr = "";
                 final int code = response.code();
                 try {
                     responseStr = response.body().string();
                 } catch (final Exception e) {
+                    PrintLineLog.e("pull onResponse Exception code= " + code + " Exception=" +
+                            ExceptionUtil.exceptionToString(e));
                     callback.onFailed(code, e, useTime, null);
                     return;
                 }
                 String finalResponseStr = responseStr;
+                PrintLineLog.i("pull onResponse result= " + responseStr);
                 callback.onResponse(code, finalResponseStr, useTime, call);
             }
         });
@@ -632,12 +709,19 @@ public class OkHttpUtil {
             return;
         }
         Request request = getJsonRequest(url, headers, paramsMap);
+        PrintLineLog.i("pull url= " + url);
+        PrintLineLog.i("pull headers= " + getMapString(headers));
+        PrintLineLog.i("pull params= " + getMapString(paramsMap));
+        PrintLineLog.i("pull filePath= " + file.getAbsolutePath());
         final long startTime = System.currentTimeMillis();
         OkHttpUtil.getInstance().getOkHttpClient()
                 .newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.e("pull onFailure useTime= " + useTime);
+                PrintLineLog.e("pull onFailure Exception= " +
+                        ExceptionUtil.exceptionToString(e));
                 OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
                     @Override
                     public void run() {
@@ -649,6 +733,7 @@ public class OkHttpUtil {
             @Override
             public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
                 final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.i("pull onResponse useTime= " + useTime);
                 final int code = response.code();
                 BufferedSink bufferedSink = null;
 
@@ -683,6 +768,26 @@ public class OkHttpUtil {
                 });
             }
         });
+    }
+
+    /**
+     * 获取Map的字符串
+     * @param map
+     * @return
+     */
+    private static String getMapString(Map<String, String> map) {
+        if (null == map) {
+            return "";
+        }
+        JSONObject json = new JSONObject();
+        for (String key : map.keySet()) {
+            try {
+                json.put(key, map.get(key));
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+        return json.toString();
     }
 
     /**

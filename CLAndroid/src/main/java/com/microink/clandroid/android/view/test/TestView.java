@@ -1,5 +1,7 @@
 package com.microink.clandroid.android.view.test;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.content.Context;
@@ -130,8 +132,13 @@ public class TestView extends ConstraintLayout implements View.OnClickListener {
                     TestValue.PREFERENCE_KEY_HIDE, false);
             if (null != objectAnimator && objectAnimator.isRunning()) {
                 objectAnimator.cancel();
+                objectAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationCancel(Animator animation) {
+                        mTVEnv.setAlpha(1f);
+                    }
+                });
             }
-            mTVEnv.setAlpha(1f);
             mTVEnv.setVisibility(VISIBLE);
         } else {
             // 说明现在是显示视图的，点击应该隐藏

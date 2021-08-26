@@ -66,6 +66,12 @@ android {
     }
 }
 
+repositories {
+    flatDir {
+        dirs 'libs'
+    }
+}
+
 dependencies {
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
@@ -78,7 +84,10 @@ dependencies {
     // 分包
     implementation 'com.android.support:multidex:1.0.3'
 
-    api project(path: ':CLAndroid')
+//    api project(path: ':CLAndroid')
+    implementation files('libs/CLAndroid-20210826.aar')
+    implementation files('libs/PLog-release.aar')
+//    implementation(name: 'CLCameraX-20210826', ext: 'aar')
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
     implementation 'com.airbnb.android:lottie:3.4.2'

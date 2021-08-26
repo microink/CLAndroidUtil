@@ -1,6 +1,7 @@
 package com.microink.clandroid.android.http;
 
 import com.google.gson.Gson;
+import com.microink.clandroid.android.log.PrintLineLog;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;

@@ -1,6 +1,7 @@
 package com.microink.clandroidutil;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -14,12 +15,19 @@ import com.airbnb.lottie.LottieListener;
 import com.airbnb.lottie.LottieTask;
 import com.bumptech.glide.Glide;
 import com.microink.clandroid.android.http.OkHttpUtil;
+import com.microink.clandroid.android.http.ResponseCallBack;
+import com.microink.clandroid.android.log.PrintLineLog;
 import com.opensource.svgaplayer.SVGAImageView;
 import com.opensource.svgaplayer.SVGAParser;
 import com.opensource.svgaplayer.SVGAVideoEntity;
 
+import java.util.HashMap;
+import java.util.Map;
+
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import okhttp3.Call;
 
 /**
  * @author Cass
@@ -54,6 +62,14 @@ public class LottieActivity extends AppCompatActivity implements View.OnClickLis
         mBtnShowGif.setOnClickListener(this);
         mBtnShowLottie.setOnClickListener(this);
         mBtnShowSVGA.setOnClickListener(this);
+    }
+
+    public static Map<String, String> getLoginRequestHeaderNoToken() {
+        Map<String, String> map = new HashMap<>();
+        map.put("Client-Type", "Android");
+        map.put("App-Version", BuildConfig.VERSION_NAME);
+        map.put("Accept", "application/json");
+        return map;
     }
 
     private void showGif() {
@@ -111,20 +127,45 @@ public class LottieActivity extends AppCompatActivity implements View.OnClickLis
     }
 
     private void loadURL() {
-        String url = "https://www.baidu.com";
-        OkHttpUtil.OkHttpUtilBuilder builder =
-                OkHttpUtil.OkHttpUtilBuilder.requestUlr(url);
-        builder.postJsonRequestCallString(new OkHttpUtil.OkHttpUtilStringCallback() {
+        //String url = "https://www.baidu.com";
+        //OkHttpUtil.OkHttpUtilBuilder builder =
+        //        OkHttpUtil.OkHttpUtilBuilder.requestUlr(url);
+        //builder.postJsonRequestCallString(new OkHttpUtil.OkHttpUtilStringCallback() {
+        //    @Override
+        //    public void onFailed(int code, Exception e, long useTime,
+        //            @Nullable okhttp3.Call call) {
+        //        Log.i("LottieActivity", "onFailed()");
+        //    }
+        //
+        //    @Override
+        //    public void onResponse(int code, String response, long useTime,
+        //            @Nullable okhttp3.Call call) {
+        //        Log.i("LottieActivity", "onResponse()");
+        //    }
+        //});
+
+        OkHttpUtil.OkHttpUtilFormBuilder formBuilder =
+                OkHttpUtil.OkHttpUtilFormBuilder
+                        .requestUlr("https://medical-api-dev.moair.net/api/login")
+                        .setHeaders(getLoginRequestHeaderNoToken())
+                        .addParams("username", "11202021")
+                        .addParams("password", "123456");
+        final long startTime = System.currentTimeMillis();
+        formBuilder.postFormRequestCallObject(new ResponseCallBack<LoginResp>() {
             @Override
-            public void onFailed(int code, Exception e, long useTime,
-                    @Nullable okhttp3.Call call) {
-                Log.i("LottieActivity", "onFailed()");
+            public void onFailed(int code, Exception e, @Nullable String responseStr, long useTime,
+                    @Nullable Call call) {
+                PrintLineLog.e("login failed code= " + code +
+                        " useTime= " + useTime + "ms", true);
+                PrintLineLog.e(e, true);
+                e.printStackTrace();
             }
 
             @Override
-            public void onResponse(int code, String response, long useTime,
-                    @Nullable okhttp3.Call call) {
-                Log.i("LottieActivity", "onResponse()");
+            public void onResponse(int code, @NonNull LoginResp response, String responseStr,
+                    long useTime, @Nullable Call call) {
+                PrintLineLog.i("login success useTime= " + useTime + "ms",
+                        true);
             }
         });
     }
