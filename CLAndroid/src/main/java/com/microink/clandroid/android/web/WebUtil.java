@@ -33,6 +33,8 @@ public class WebUtil {
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         return isPDF;
     }
@@ -54,6 +56,8 @@ public class WebUtil {
                 String contentType = urlConnection.getContentType();
                 isDownloadableFile = contentType.equalsIgnoreCase("application/pdf");
             } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e) {
                 e.printStackTrace();
             }
             return isDownloadableFile;

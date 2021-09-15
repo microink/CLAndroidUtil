@@ -252,8 +252,6 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
 
         // 相机线程池
         Executor cameraExecutor = Executors.newSingleThreadExecutor();
-        final YuvToRgbConverter yuvToRgbConverter =
-                new YuvToRgbConverter(mBaseActivity);
 
         // 图像分析相关逻辑
         imageAnalysis.setAnalyzer(cameraExecutor, new ImageAnalysis.Analyzer() {
@@ -301,6 +299,8 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
                 }
                 Bitmap bitmap = Bitmap.createBitmap(rect.width(), rect.height(),
                         Bitmap.Config.ARGB_8888);
+                YuvToRgbConverter yuvToRgbConverter =
+                        new YuvToRgbConverter(mBaseActivity);
                 yuvToRgbConverter.yuvToRgb(image.getImage(), bitmap, rect);
 
                 bitmap = BitmapUtil.rotateBitmap(bitmap, 90, false);

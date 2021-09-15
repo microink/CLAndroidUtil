@@ -4,6 +4,21 @@
     <!-- 请求网络 -->
     <uses-permission android:name="android.permission.INTERNET" />
 
+    <!-- Android11 软件包可见性兼容 -->
+    <queries>
+        <!-- 外部浏览器打开网页支持 -->
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="https" />
+        </intent>
+        <intent>
+            <action android:name="android.intent.action.VIEW" />
+            <category android:name="android.intent.category.BROWSABLE" />
+            <data android:scheme="http" />
+        </intent>
+    </queries>
+
     <application>
         <!-- WebView的Activity -->
         <activity android:name=".android.web.CLWebViewActivity"

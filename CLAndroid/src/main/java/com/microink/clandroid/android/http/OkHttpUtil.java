@@ -263,10 +263,10 @@ public class OkHttpUtil {
      * @return
      */
     private static <T> void pullFileRequestData(String url, Map<String, String> headers,
-            Map<String, RequestFileBean> paramsFileMap,
+            Map<String, String> paramsMap, Map<String, RequestFileBean> paramsFileMap,
             final ResponseCallBack<T> callback){
 
-        Request request = getUploadFileRequest(url, headers, paramsFileMap);
+        Request request = getUploadFileRequest(url, headers, paramsMap, paramsFileMap);
         final long startTime = System.currentTimeMillis();
         OkHttpUtil.getInstance().getOkHttpClient()
                 .newCall(request).enqueue(new Callback() {
@@ -317,10 +317,10 @@ public class OkHttpUtil {
      * @throws JSONException
      */
     private static void pullFileRequestStringData(String url, Map<String, String> headers,
-            Map<String, RequestFileBean> paramsFileMap,
+            Map<String, String> paramsMap, Map<String, RequestFileBean> paramsFileMap,
             final OkHttpUtilStringCallback callback) {
 
-        Request request = getUploadFileRequest(url, headers, paramsFileMap);
+        Request request = getUploadFileRequest(url, headers, paramsMap, paramsFileMap);
         final long startTime = System.currentTimeMillis();
         OkHttpUtil.getInstance().getOkHttpClient()
                 .newCall(request).enqueue(new Callback() {
@@ -376,11 +376,15 @@ public class OkHttpUtil {
      * @return
      */
     private static Request getUploadFileRequest(String url, Map<String, String> headers,
-            Map<String, RequestFileBean> paramsFileMap) {
+            Map<String, String> paramsMap, Map<String, RequestFileBean> paramsFileMap) {
         PrintLineLog.i("pullDownloadFile url= " + url);
         PrintLineLog.i("pullDownloadFile headers= " + getMapString(headers));
         MultipartBody.Builder multipartBodyBuild = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM);
+        // 构造参数
+        for (String key : paramsMap.keySet()) {
+            multipartBodyBuild.addFormDataPart(key, paramsMap.get(key));
+        }
         File uploadFile = null;
         RequestFileBean fileBean = null;
         for (String key : paramsFileMap.keySet()) {
@@ -955,14 +959,22 @@ public class OkHttpUtil {
      */
     public static class OkHttpUtilFileBuilder{
 
+        protected Map<String, String> paramsMap;
         protected Map<String, RequestFileBean> partFileMap;
         protected Map<String, String> headersMap;
         protected String url;
 
         public OkHttpUtilFileBuilder() {
             super();
+            paramsMap = new HashMap<>();
             partFileMap = new HashMap<>();
         }
+
+        public OkHttpUtilFileBuilder addParams(String key, String params) {
+            paramsMap.put(key, params);
+            return this;
+        }
+
 
         public OkHttpUtilFileBuilder addFormDataPart(String name, String fileName, File file) {
             if (TextUtils.isEmpty(name) || TextUtils.isEmpty(fileName) || null == file) {
@@ -997,6 +1009,26 @@ public class OkHttpUtil {
             return this;
         }
 
+        /**
+         * 获取参数的String形式
+         * @param builder
+         * @return
+         */
+        public static String getParamsString(OkHttpUtilFileBuilder builder) {
+            if (null == builder) {
+                return "";
+            }
+            JSONObject json = new JSONObject();
+            for (String key : builder.paramsMap.keySet()) {
+                try {
+                    json.put(key, builder.paramsMap.get(key));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+            return json.toString();
+        }
+
         public static OkHttpUtilFileBuilder requestUlr(String url) {
             OkHttpUtilFileBuilder okHttpUtilBuilder = new OkHttpUtilFileBuilder();
             okHttpUtilBuilder.url = url;
@@ -1009,7 +1041,7 @@ public class OkHttpUtil {
          * @throws JSONException
          */
         public <T> void postFileRequestCallObject(ResponseCallBack<T> callback) {
-            OkHttpUtil.pullFileRequestData(url, headersMap, partFileMap, callback);
+            OkHttpUtil.pullFileRequestData(url, headersMap, paramsMap, partFileMap, callback);
         }
 
         /**
@@ -1017,7 +1049,7 @@ public class OkHttpUtil {
          * @param callback
          */
         public void postFileRequestCallString(OkHttpUtilStringCallback callback) {
-            OkHttpUtil.pullFileRequestStringData(url, headersMap, partFileMap, callback);
+            OkHttpUtil.pullFileRequestStringData(url, headersMap, paramsMap, partFileMap, callback);
         }
     }
 
