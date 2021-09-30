@@ -34,6 +34,19 @@ public class ScreenUtil {
     }
 
     /**
+     * 获取Activity宽度 dp
+     * @param context
+     * @return
+     */
+    public static int getActivityWidthDp(Context context) {
+        if (null == context) {
+            return 0;
+        }
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        return pxToDp(context, displayMetrics.widthPixels);
+    }
+
+    /**
      * Gets the Activity height, excluding the status bar height
      * 获取Activity高度，不包含状态栏高度
      *
@@ -46,6 +59,19 @@ public class ScreenUtil {
         }
         DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
         return displayMetrics.heightPixels;
+    }
+
+    /**
+     * 获取Activity高度 dp
+     * @param context
+     * @return
+     */
+    public static int getActivityHeightDp(Context context) {
+        if (null == context) {
+            return 0;
+        }
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        return pxToDp(context, displayMetrics.heightPixels);
     }
 
     /**

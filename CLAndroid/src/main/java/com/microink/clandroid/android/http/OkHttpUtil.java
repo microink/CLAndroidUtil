@@ -370,6 +370,51 @@ public class OkHttpUtil {
     }
 
     /**
+     * 根据url和参数请求接口 上传文件 返回String
+     * 异步回调
+     * @param url
+     * @param callback
+     * @throws JSONException
+     */
+    private static void pullFileRequestStringDataAsync(String url, Map<String, String> headers,
+            Map<String, String> paramsMap, Map<String, RequestFileBean> paramsFileMap,
+            final OkHttpUtilStringCallback callback) {
+
+        Request request = getUploadFileRequest(url, headers, paramsMap, paramsFileMap);
+        final long startTime = System.currentTimeMillis();
+        OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
+                final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.e("pull onFailure useTime= " + useTime);
+                PrintLineLog.e("pull onFailure Exception= " +
+                        ExceptionUtil.exceptionToString(e));
+                callback.onFailed(ON_FAILED_CODE, e, useTime, call);
+            }
+
+            @Override
+            public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
+                final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.i("pull onResponse useTime= " + useTime);
+                String responseStr = "";
+                final int code = response.code();
+                try {
+                    responseStr = response.body().string();
+                } catch (final Exception e) {
+                    PrintLineLog.e("pull onResponse Exception code= " + code + " Exception=" +
+                            ExceptionUtil.exceptionToString(e));
+                    callback.onFailed(code, e, useTime, null);
+                    return;
+                }
+                final String finalResponseStr = responseStr;
+                PrintLineLog.i("pull onResponse result= " + responseStr);
+                callback.onResponse(code, finalResponseStr, useTime, call);
+            }
+        });
+    }
+
+    /**
      * 获取上传文件的Request
      * @param url
      * @param paramsFileMap
@@ -775,6 +820,68 @@ public class OkHttpUtil {
     }
 
     /**
+     * 根据url和参数请求接口下载文件
+     * 异步回调
+     * @param url
+     * @param paramsMap
+     * @param callback
+     * @throws JSONException
+     */
+    private static void pullDownloadFileAsync(String url, Map<String, String> headers,
+            Map<String, String> paramsMap, final File file,
+            final OkHttpUtilStringCallback callback) {
+
+        if (TextUtils.isEmpty(url) || null == file || null == callback) {
+            return;
+        }
+        Request request = getJsonRequest(url, headers, paramsMap);
+        PrintLineLog.i("pull url= " + url);
+        PrintLineLog.i("pull headers= " + getMapString(headers));
+        PrintLineLog.i("pull params= " + getMapString(paramsMap));
+        PrintLineLog.i("pull filePath= " + file.getAbsolutePath());
+        final long startTime = System.currentTimeMillis();
+        OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
+                final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.e("pull onFailure useTime= " + useTime);
+                PrintLineLog.e("pull onFailure Exception= " +
+                        ExceptionUtil.exceptionToString(e));
+                callback.onFailed(ON_FAILED_CODE, e, useTime, call);
+            }
+
+            @Override
+            public void onResponse(@NotNull final Call call, @NotNull Response response) throws IOException {
+                final long useTime = System.currentTimeMillis() - startTime;
+                PrintLineLog.i("pull onResponse useTime= " + useTime);
+                final int code = response.code();
+                BufferedSink bufferedSink = null;
+
+                File parentFile = file.getParentFile();
+                if (null != parentFile) {
+                    if (!parentFile.exists()) {
+                        parentFile.mkdirs();
+                    }
+                }
+                try {
+                    Sink sink = Okio.sink(file);
+                    bufferedSink = Okio.buffer(sink);
+                    bufferedSink.writeAll(response.body().source());
+                } catch (final Exception e) {
+                    callback.onFailed(code, e, useTime, null);
+                    return;
+                } finally {
+                    if (null != bufferedSink){
+                        bufferedSink.close();
+                    }
+                }
+                callback.onResponse(code, "success", useTime, call);
+            }
+        });
+    }
+
+    /**
      * 获取Map的字符串
      * @param map
      * @return
@@ -1051,6 +1158,15 @@ public class OkHttpUtil {
         public void postFileRequestCallString(OkHttpUtilStringCallback callback) {
             OkHttpUtil.pullFileRequestStringData(url, headersMap, paramsMap, partFileMap, callback);
         }
+
+        /**
+         * 获取字符串结果
+         * 异步回调
+         * @param callback
+         */
+        public void postFileRequestCallStringAsync(OkHttpUtilStringCallback callback) {
+            OkHttpUtil.pullFileRequestStringDataAsync(url, headersMap, paramsMap, partFileMap, callback);
+        }
     }
 
     /**
@@ -1115,6 +1231,16 @@ public class OkHttpUtil {
          */
         public <T> void postDownloadFile(File file, OkHttpUtilStringCallback callback) {
             OkHttpUtil.pullDownloadFile(url, headersMap, paramsMap, file, callback);
+        }
+
+        /**
+         * 下载文件
+         * 异步回调
+         * @param callback
+         * @throws JSONException
+         */
+        public <T> void postDownloadFileAsync(File file, OkHttpUtilStringCallback callback) {
+            OkHttpUtil.pullDownloadFileAsync(url, headersMap, paramsMap, file, callback);
         }
     }
 
