@@ -52,6 +52,7 @@ import androidx.camera.lifecycle.ProcessCameraProvider;
 import androidx.camera.view.PreviewView;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.lifecycle.Lifecycle;
 
 /**
  * @author Cass
@@ -332,18 +333,28 @@ public abstract class CLCameraXActivity extends CLBaseActivity {
                 .setViewPort(viewPort)
                 .build();
 
-        mCamera = cameraProvider.bindToLifecycle(customLifecycle,
-                cameraSelector, useCaseGroup);
-
-        preview.setSurfaceProvider(mPreviewView.getSurfaceProvider());
+        if (customLifecycle.getLifecycle().getCurrentState() != Lifecycle.State.DESTROYED) {
+            // 声明周期结束，说明Activity已经onDestroy不再创建相机
+            mCamera = cameraProvider.bindToLifecycle(customLifecycle,
+                    cameraSelector, useCaseGroup);
+            preview.setSurfaceProvider(mPreviewView.getSurfaceProvider());
+        } else {
+            //PrintLineLog.e("customLifecycle DESTROYED not bindToLifecycle", true);
+            lifecycleDestroyNotOpenCamera();
+        }
     }
+
+    /**
+     * 生命周期已经结束，不再打开摄像头回调
+     */
+    protected abstract void lifecycleDestroyNotOpenCamera();
 
     /**
      * 加入供应商提供的CameraX拍照拓展
      * @param builder
      */
     @SuppressLint("RestrictedApi")
-    private void addCameraXEx(ImageCapture.Builder builder, CameraSelector cameraSelector) {
+    protected void addCameraXEx(ImageCapture.Builder builder, CameraSelector cameraSelector) {
         // 供应商拓展
         BokehImageCaptureExtender bokehImageCapture = BokehImageCaptureExtender.create(builder);
         if (bokehImageCapture.isExtensionAvailable(cameraSelector)) {

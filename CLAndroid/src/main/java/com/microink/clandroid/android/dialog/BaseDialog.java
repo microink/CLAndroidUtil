@@ -69,6 +69,24 @@ public abstract class BaseDialog extends Dialog implements View.OnClickListener 
                 gravity, canceledOnTouchOutside);
     }
 
+    /**
+     * 构造函数
+     * @param context
+     * @param widthDP
+     * @param heightDP
+     * @param gravity
+     * @param canceledOnTouchOutside
+     * @param isShowDim 是否显示半透明黑色背景
+     */
+    public BaseDialog(@NonNull Context context, float widthDP, float heightDP,
+            int gravity, boolean canceledOnTouchOutside, boolean isShowDim) {
+        super(context, isShowDim ? R.style.CLBaseDialogStyle : R.style.CLBaseNoDimBGDialogStyle);
+
+        initDialog(context, ScreenUtil.dpToPx(context, widthDP),
+                ScreenUtil.dpToPx(context, heightDP),
+                gravity, canceledOnTouchOutside);
+    }
+
     private void initDialog(Context context, int width, int height, int gravity, boolean canceledOnTouchOutside) {
         this.width = width;
         this.height = height;
@@ -78,10 +96,10 @@ public abstract class BaseDialog extends Dialog implements View.OnClickListener 
         int screenWidth = ScreenUtil.getActivityWidth(context);
         int screenHeight = ScreenUtil.getActivityHeight(context);
         // 匹配屏幕
-        if (0 == this.width) {
+        if (0 >= this.width) {
             this.width = screenWidth;
         }
-        if (0 == this.height) {
+        if (0 >= this.height) {
             this.height = screenHeight;
         }
 

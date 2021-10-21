@@ -29,6 +29,14 @@
         <item name="android:windowFullscreen">true</item>
         <item name="android:windowNoTitle">true</item>
     </style>
+    <!-- BaseDialog 没有半透明背景的style -->
+    <style name="CLBaseNoDimBGDialogStyle" parent="@android:style/Theme.Dialog">
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowNoTitle">true</item>
+        <!-- 后面的activity变暗 -->
+        <item name="android:backgroundDimEnabled">false</item>
+    </style>
 
     <!-- BaseDialog 动画 从下部滑动进入-->
     <style name="CLBaseDialogAnimBottom" parent="@android:style/Animation.Dialog">
