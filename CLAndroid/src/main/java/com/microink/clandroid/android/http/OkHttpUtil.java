@@ -152,7 +152,7 @@ public class OkHttpUtil {
      * @param url
      * @return
      */
-    public static <T> void pullJsonRequestData(String url, Map<String, String> headers,
+    public static <T> Call pullJsonRequestData(String url, Map<String, String> headers,
             Map<String, String> paramsMap,
             final ResponseCallBack<T> callback){
 
@@ -161,8 +161,9 @@ public class OkHttpUtil {
         PrintLineLog.i("pullJsonRequestData headers= " + getMapString(headers));
         PrintLineLog.i("pullJsonRequestData params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
-        OkHttpUtil.getInstance().getOkHttpClient()
-                .newCall(request).enqueue(new Callback() {
+        Call call = OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
@@ -194,6 +195,7 @@ public class OkHttpUtil {
                 }
             }
         });
+        return call;
     }
 
     /**
@@ -215,7 +217,7 @@ public class OkHttpUtil {
      * 获取Json的请求Request
      * @return
      */
-    private static Request getJsonRequest(String url, Map<String, String> headers,
+    public static Request getJsonRequest(String url, Map<String, String> headers,
             Map<String, String> paramsMap) {
         // 构造参数string
         JSONObject json = new JSONObject();
@@ -262,14 +264,15 @@ public class OkHttpUtil {
      * @param url
      * @return
      */
-    private static <T> void pullFileRequestData(String url, Map<String, String> headers,
+    private static <T> Call pullFileRequestData(String url, Map<String, String> headers,
             Map<String, String> paramsMap, Map<String, RequestFileBean> paramsFileMap,
             final ResponseCallBack<T> callback){
 
         Request request = getUploadFileRequest(url, headers, paramsMap, paramsFileMap);
         final long startTime = System.currentTimeMillis();
-        OkHttpUtil.getInstance().getOkHttpClient()
-                .newCall(request).enqueue(new Callback() {
+        Call call = OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
@@ -308,6 +311,7 @@ public class OkHttpUtil {
                 }
             }
         });
+        return call;
     }
 
     /**
@@ -316,14 +320,15 @@ public class OkHttpUtil {
      * @param callback
      * @throws JSONException
      */
-    private static void pullFileRequestStringData(String url, Map<String, String> headers,
+    private static Call pullFileRequestStringData(String url, Map<String, String> headers,
             Map<String, String> paramsMap, Map<String, RequestFileBean> paramsFileMap,
             final OkHttpUtilStringCallback callback) {
 
         Request request = getUploadFileRequest(url, headers, paramsMap, paramsFileMap);
         final long startTime = System.currentTimeMillis();
-        OkHttpUtil.getInstance().getOkHttpClient()
-                .newCall(request).enqueue(new Callback() {
+        Call call = OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
@@ -367,6 +372,7 @@ public class OkHttpUtil {
                 });
             }
         });
+        return call;
     }
 
     /**
@@ -376,14 +382,15 @@ public class OkHttpUtil {
      * @param callback
      * @throws JSONException
      */
-    private static void pullFileRequestStringDataAsync(String url, Map<String, String> headers,
+    private static Call pullFileRequestStringDataAsync(String url, Map<String, String> headers,
             Map<String, String> paramsMap, Map<String, RequestFileBean> paramsFileMap,
             final OkHttpUtilStringCallback callback) {
 
         Request request = getUploadFileRequest(url, headers, paramsMap, paramsFileMap);
         final long startTime = System.currentTimeMillis();
-        OkHttpUtil.getInstance().getOkHttpClient()
-                .newCall(request).enqueue(new Callback() {
+        Call call = OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
@@ -412,6 +419,7 @@ public class OkHttpUtil {
                 callback.onResponse(code, finalResponseStr, useTime, call);
             }
         });
+        return call;
     }
 
     /**
@@ -470,7 +478,7 @@ public class OkHttpUtil {
      * @param callback
      * @throws JSONException
      */
-    private static void pullJsonRequestStringData(String url, Map<String, String> headers,
+    private static Call pullJsonRequestStringData(String url, Map<String, String> headers,
             Map<String, String> paramsMap,
             final OkHttpUtilStringCallback callback) {
 
@@ -479,8 +487,9 @@ public class OkHttpUtil {
         PrintLineLog.i("pull headers= " + getMapString(headers));
         PrintLineLog.i("pull params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
-        OkHttpUtil.getInstance().getOkHttpClient()
-                .newCall(request).enqueue(new Callback() {
+        Call call = OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
@@ -524,6 +533,7 @@ public class OkHttpUtil {
                 });
             }
         });
+        return call;
     }
 
     /**
@@ -534,7 +544,7 @@ public class OkHttpUtil {
      * @param callback
      * @throws JSONException
      */
-    private static void pullJsonRequestStringDataAsync(String url, Map<String, String> headers,
+    private static Call pullJsonRequestStringDataAsync(String url, Map<String, String> headers,
             Map<String, String> paramsMap,
             final OkHttpUtilStringCallback callback) {
 
@@ -543,8 +553,9 @@ public class OkHttpUtil {
         PrintLineLog.i("pull headers= " + getMapString(headers));
         PrintLineLog.i("pull params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
-        OkHttpUtil.getInstance().getOkHttpClient()
-                .newCall(request).enqueue(new Callback() {
+        Call call = OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 long useTime = System.currentTimeMillis() - startTime;
@@ -573,6 +584,7 @@ public class OkHttpUtil {
                 callback.onResponse(code, finalResponseStr, useTime, call);
             }
         });
+        return call;
     }
 
     /**
@@ -580,7 +592,7 @@ public class OkHttpUtil {
      * @param url
      * @return
      */
-    private static <T> void pullFormRequestData(String url, Map<String, String> headers,
+    private static <T> Call pullFormRequestData(String url, Map<String, String> headers,
             Map<String, String> paramsMap,
             final ResponseCallBack<T> callback){
 
@@ -589,8 +601,9 @@ public class OkHttpUtil {
         PrintLineLog.i("pull headers= " + getMapString(headers));
         PrintLineLog.i("pull params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
-        OkHttpUtil.getInstance().getOkHttpClient()
-                .newCall(request).enqueue(new Callback() {
+        Call call = OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
@@ -629,6 +642,7 @@ public class OkHttpUtil {
                 }
             }
         });
+        return call;
     }
 
     /**
@@ -638,7 +652,7 @@ public class OkHttpUtil {
      * @param callback
      * @throws JSONException
      */
-    private static void pullFormRequestStringData(String url, Map<String, String> headers,
+    private static Call pullFormRequestStringData(String url, Map<String, String> headers,
             Map<String, String> paramsMap,
             final OkHttpUtilStringCallback callback) {
 
@@ -647,8 +661,9 @@ public class OkHttpUtil {
         PrintLineLog.i("pull headers= " + getMapString(headers));
         PrintLineLog.i("pull params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
-        OkHttpUtil.getInstance().getOkHttpClient()
-                .newCall(request).enqueue(new Callback() {
+        Call call = OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
@@ -692,6 +707,7 @@ public class OkHttpUtil {
                 });
             }
         });
+        return call;
     }
 
     /**
@@ -702,7 +718,7 @@ public class OkHttpUtil {
      * @param callback
      * @throws JSONException
      */
-    private static void pullFormRequestStringDataAsync(String url, Map<String, String> headers,
+    private static Call pullFormRequestStringDataAsync(String url, Map<String, String> headers,
             Map<String, String> paramsMap,
             final OkHttpUtilStringCallback callback) {
 
@@ -711,8 +727,9 @@ public class OkHttpUtil {
         PrintLineLog.i("pull headers= " + getMapString(headers));
         PrintLineLog.i("pull params= " + getMapString(paramsMap));
         final long startTime = System.currentTimeMillis();
-        OkHttpUtil.getInstance().getOkHttpClient()
-                .newCall(request).enqueue(new Callback() {
+        Call call = OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 long useTime = System.currentTimeMillis() - startTime;
@@ -741,6 +758,7 @@ public class OkHttpUtil {
                 callback.onResponse(code, finalResponseStr, useTime, call);
             }
         });
+        return call;
     }
 
     /**
@@ -750,12 +768,12 @@ public class OkHttpUtil {
      * @param callback
      * @throws JSONException
      */
-    private static void pullDownloadFile(String url, Map<String, String> headers,
+    private static Call pullDownloadFile(String url, Map<String, String> headers,
             Map<String, String> paramsMap, final File file,
             final OkHttpUtilStringCallback callback) {
 
         if (TextUtils.isEmpty(url) || null == file || null == callback) {
-            return;
+            return null;
         }
         Request request = getJsonRequest(url, headers, paramsMap);
         PrintLineLog.i("pull url= " + url);
@@ -763,8 +781,9 @@ public class OkHttpUtil {
         PrintLineLog.i("pull params= " + getMapString(paramsMap));
         PrintLineLog.i("pull filePath= " + file.getAbsolutePath());
         final long startTime = System.currentTimeMillis();
-        OkHttpUtil.getInstance().getOkHttpClient()
-                .newCall(request).enqueue(new Callback() {
+        Call call = OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
@@ -817,6 +836,7 @@ public class OkHttpUtil {
                 });
             }
         });
+        return call;
     }
 
     /**
@@ -827,12 +847,12 @@ public class OkHttpUtil {
      * @param callback
      * @throws JSONException
      */
-    private static void pullDownloadFileAsync(String url, Map<String, String> headers,
+    private static Call pullDownloadFileAsync(String url, Map<String, String> headers,
             Map<String, String> paramsMap, final File file,
             final OkHttpUtilStringCallback callback) {
 
         if (TextUtils.isEmpty(url) || null == file || null == callback) {
-            return;
+            return null;
         }
         Request request = getJsonRequest(url, headers, paramsMap);
         PrintLineLog.i("pull url= " + url);
@@ -840,8 +860,9 @@ public class OkHttpUtil {
         PrintLineLog.i("pull params= " + getMapString(paramsMap));
         PrintLineLog.i("pull filePath= " + file.getAbsolutePath());
         final long startTime = System.currentTimeMillis();
-        OkHttpUtil.getInstance().getOkHttpClient()
-                .newCall(request).enqueue(new Callback() {
+        Call call = OkHttpUtil.getInstance().getOkHttpClient()
+                .newCall(request);
+        call.enqueue(new Callback() {
             @Override
             public void onFailure(@NotNull final Call call, @NotNull final IOException e) {
                 final long useTime = System.currentTimeMillis() - startTime;
@@ -869,7 +890,12 @@ public class OkHttpUtil {
                     bufferedSink = Okio.buffer(sink);
                     bufferedSink.writeAll(response.body().source());
                 } catch (final Exception e) {
-                    callback.onFailed(code, e, useTime, null);
+                    OkHttpUtil.getInstance().executeFunInMain(new Runnable() {
+                        @Override
+                        public void run() {
+                            callback.onFailed(code, e, useTime, null);
+                        }
+                    });
                     return;
                 } finally {
                     if (null != bufferedSink){
@@ -879,6 +905,7 @@ public class OkHttpUtil {
                 callback.onResponse(code, "success", useTime, call);
             }
         });
+        return call;
     }
 
     /**
@@ -886,7 +913,7 @@ public class OkHttpUtil {
      * @param map
      * @return
      */
-    private static String getMapString(Map<String, String> map) {
+    public static String getMapString(Map<String, String> map) {
         if (null == map) {
             return "";
         }
@@ -908,6 +935,7 @@ public class OkHttpUtil {
         protected Map<String, String> paramsMap;
         protected Map<String, String> headersMap;
         protected String url;
+        protected Call call;
         public OkHttpUtilBuilder() {
             paramsMap = new HashMap<>();
         }
@@ -956,12 +984,22 @@ public class OkHttpUtil {
         }
 
         /**
+         * 取消请求
+         */
+        public void callRequest() {
+            if (null != call) {
+                PrintLineLog.i("callRequest");
+                call.cancel();
+            }
+        }
+
+        /**
          * 获取Json结果
          * @param callback
          * @throws JSONException
          */
         public <T> void postJsonRequestCallObject(ResponseCallBack<T> callback) {
-            OkHttpUtil.pullJsonRequestData(url, headersMap, paramsMap, callback);
+            call = OkHttpUtil.pullJsonRequestData(url, headersMap, paramsMap, callback);
         }
 
         /**
@@ -969,7 +1007,7 @@ public class OkHttpUtil {
          * @param callback
          */
         public void postJsonRequestCallString(OkHttpUtilStringCallback callback) {
-            OkHttpUtil.pullJsonRequestStringData(url, headersMap, paramsMap, callback);
+            call = OkHttpUtil.pullJsonRequestStringData(url, headersMap, paramsMap, callback);
         }
 
         /**
@@ -977,7 +1015,7 @@ public class OkHttpUtil {
          * @param callback
          */
         public void postJsonRequestCallStringAsync(OkHttpUtilStringCallback callback) {
-            OkHttpUtil.pullJsonRequestStringDataAsync(url, headersMap, paramsMap, callback);
+            call = OkHttpUtil.pullJsonRequestStringDataAsync(url, headersMap, paramsMap, callback);
         }
     }
 
@@ -988,6 +1026,7 @@ public class OkHttpUtil {
         protected Map<String, String> paramsMap;
         protected Map<String, String> headersMap;
         protected String url;
+        protected Call call;
         public OkHttpUtilFormBuilder() {
             paramsMap = new HashMap<>();
         }
@@ -1036,12 +1075,21 @@ public class OkHttpUtil {
         }
 
         /**
+         * 取消请求
+         */
+        public void callRequest() {
+            if (null != call) {
+                call.cancel();
+            }
+        }
+
+        /**
          * 获取Json结果
          * @param callback
          * @throws JSONException
          */
         public <T> void postFormRequestCallObject(ResponseCallBack<T> callback) {
-            OkHttpUtil.pullFormRequestData(url, headersMap, paramsMap, callback);
+            call = OkHttpUtil.pullFormRequestData(url, headersMap, paramsMap, callback);
         }
 
         /**
@@ -1049,7 +1097,7 @@ public class OkHttpUtil {
          * @param callback
          */
         public void postFormRequestCallString(OkHttpUtilStringCallback callback) {
-            OkHttpUtil.pullFormRequestStringData(url, headersMap, paramsMap, callback);
+            call = OkHttpUtil.pullFormRequestStringData(url, headersMap, paramsMap, callback);
         }
 
         /**
@@ -1057,7 +1105,7 @@ public class OkHttpUtil {
          * @param callback
          */
         public void postFormRequestCallStringAsync(OkHttpUtilStringCallback callback) {
-            OkHttpUtil.pullFormRequestStringDataAsync(url, headersMap, paramsMap, callback);
+            call = OkHttpUtil.pullFormRequestStringDataAsync(url, headersMap, paramsMap, callback);
         }
     }
 
@@ -1065,11 +1113,11 @@ public class OkHttpUtil {
      * 请求构造类
      */
     public static class OkHttpUtilFileBuilder{
-
         protected Map<String, String> paramsMap;
         protected Map<String, RequestFileBean> partFileMap;
         protected Map<String, String> headersMap;
         protected String url;
+        protected Call call;
 
         public OkHttpUtilFileBuilder() {
             super();
@@ -1081,7 +1129,6 @@ public class OkHttpUtil {
             paramsMap.put(key, params);
             return this;
         }
-
 
         public OkHttpUtilFileBuilder addFormDataPart(String name, String fileName, File file) {
             if (TextUtils.isEmpty(name) || TextUtils.isEmpty(fileName) || null == file) {
@@ -1143,12 +1190,22 @@ public class OkHttpUtil {
         }
 
         /**
+         * 取消请求
+         */
+        public void callRequest() {
+            if (null != call) {
+                PrintLineLog.i("callRequest");
+                call.cancel();
+            }
+        }
+
+        /**
          * 获取Json结果
          * @param callback
          * @throws JSONException
          */
         public <T> void postFileRequestCallObject(ResponseCallBack<T> callback) {
-            OkHttpUtil.pullFileRequestData(url, headersMap, paramsMap, partFileMap, callback);
+            call = OkHttpUtil.pullFileRequestData(url, headersMap, paramsMap, partFileMap, callback);
         }
 
         /**
@@ -1156,7 +1213,7 @@ public class OkHttpUtil {
          * @param callback
          */
         public void postFileRequestCallString(OkHttpUtilStringCallback callback) {
-            OkHttpUtil.pullFileRequestStringData(url, headersMap, paramsMap, partFileMap, callback);
+            call = OkHttpUtil.pullFileRequestStringData(url, headersMap, paramsMap, partFileMap, callback);
         }
 
         /**
@@ -1165,7 +1222,7 @@ public class OkHttpUtil {
          * @param callback
          */
         public void postFileRequestCallStringAsync(OkHttpUtilStringCallback callback) {
-            OkHttpUtil.pullFileRequestStringDataAsync(url, headersMap, paramsMap, partFileMap, callback);
+            call = OkHttpUtil.pullFileRequestStringDataAsync(url, headersMap, paramsMap, partFileMap, callback);
         }
     }
 
@@ -1176,6 +1233,7 @@ public class OkHttpUtil {
         protected Map<String, String> paramsMap;
         protected Map<String, String> headersMap;
         protected String url;
+        protected Call call;
         public OkHttpUtilDownloadFileBuilder() {
             paramsMap = new HashMap<>();
         }
@@ -1225,12 +1283,22 @@ public class OkHttpUtil {
         }
 
         /**
+         * 取消请求
+         */
+        public void callRequest() {
+            if (null != call) {
+                PrintLineLog.i("callRequest");
+                call.cancel();
+            }
+        }
+
+        /**
          * 下载文件
          * @param callback
          * @throws JSONException
          */
         public <T> void postDownloadFile(File file, OkHttpUtilStringCallback callback) {
-            OkHttpUtil.pullDownloadFile(url, headersMap, paramsMap, file, callback);
+            call = OkHttpUtil.pullDownloadFile(url, headersMap, paramsMap, file, callback);
         }
 
         /**
@@ -1240,7 +1308,7 @@ public class OkHttpUtil {
          * @throws JSONException
          */
         public <T> void postDownloadFileAsync(File file, OkHttpUtilStringCallback callback) {
-            OkHttpUtil.pullDownloadFileAsync(url, headersMap, paramsMap, file, callback);
+            call = OkHttpUtil.pullDownloadFileAsync(url, headersMap, paramsMap, file, callback);
         }
     }
 
