@@ -56,7 +56,9 @@ public class MmapLogWriter implements LogWriter {
 
     @Override
     public void write(String content, long partFileSizeLimit) throws Exception {
-        if (nativeLogWriter <= 0) {
+        // Android11 返回负数，其实是成功的
+        //if (nativeLogWriter <= 0) {
+        if (nativeLogWriter == 0) {
             return;
         }
         if (!initFlag.get()) {

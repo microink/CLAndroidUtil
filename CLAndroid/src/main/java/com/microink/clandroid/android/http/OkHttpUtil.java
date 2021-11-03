@@ -986,9 +986,9 @@ public class OkHttpUtil {
         /**
          * 取消请求
          */
-        public void callRequest() {
+        public void cancelRequest() {
             if (null != call) {
-                PrintLineLog.i("callRequest");
+                PrintLineLog.i("cancelRequest");
                 call.cancel();
             }
         }
@@ -1077,8 +1077,9 @@ public class OkHttpUtil {
         /**
          * 取消请求
          */
-        public void callRequest() {
+        public void cancelRequest() {
             if (null != call) {
+                PrintLineLog.i("cancelRequest");
                 call.cancel();
             }
         }
@@ -1192,9 +1193,9 @@ public class OkHttpUtil {
         /**
          * 取消请求
          */
-        public void callRequest() {
+        public void cancelRequest() {
             if (null != call) {
-                PrintLineLog.i("callRequest");
+                PrintLineLog.i("cancelRequest");
                 call.cancel();
             }
         }
@@ -1285,9 +1286,9 @@ public class OkHttpUtil {
         /**
          * 取消请求
          */
-        public void callRequest() {
+        public void cancelRequest() {
             if (null != call) {
-                PrintLineLog.i("callRequest");
+                PrintLineLog.i("cancelRequest");
                 call.cancel();
             }
         }

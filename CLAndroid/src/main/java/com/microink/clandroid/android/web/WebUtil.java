@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 
 /**
  * @author Cass
@@ -22,21 +23,62 @@ public class WebUtil {
      * @param url
      * @return
      */
-    public static boolean urlIsPDF(String url) {
+    public static void urlIsPDF(final String url, Executor executor, final PDFCheckCallback callback) {
         if (TextUtils.isEmpty(url)) {
-            return false;
+            if (null != callback) {
+                callback.isPDF(false);
+            }
+            return;
         }
-        boolean isPDF = false;
-        try {
-            isPDF = new FetchContentTypeAsync(url).execute().get();
-        } catch (ExecutionException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (Exception e) {
-            e.printStackTrace();
+        if (null == executor) {
+            Thread thread = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    boolean isDownloadableFile = false;
+                    try {
+                        URL urlCheck = new URL(url);
+                        URLConnection urlConnection = urlCheck.openConnection();
+                        String contentType = urlConnection.getContentType();
+                        isDownloadableFile = contentType.equalsIgnoreCase("application/pdf");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (null != callback) {
+                        callback.isPDF(isDownloadableFile);
+                    }
+                }
+            });
+            thread.start();
+        } else {
+            executor.execute(new Runnable() {
+                @Override
+                public void run() {
+                    boolean isDownloadableFile = false;
+                    try {
+                        URL urlCheck = new URL(url);
+                        URLConnection urlConnection = urlCheck.openConnection();
+                        String contentType = urlConnection.getContentType();
+                        isDownloadableFile = contentType.equalsIgnoreCase("application/pdf");
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                    if (null != callback) {
+                        callback.isPDF(isDownloadableFile);
+                    }
+                }
+            });
         }
-        return isPDF;
+    }
+
+    /**
+     * 检查是否是PDF回调
+     */
+    public interface PDFCheckCallback {
+        void isPDF(boolean isPF);
     }
 
     public static class FetchContentTypeAsync extends AsyncTask<Void, Void, Boolean> {
