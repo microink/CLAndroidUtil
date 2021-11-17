@@ -66,5 +66,12 @@ public class AppExecutors {
         public void executeDelay(Runnable runnable, long time) {
             mainThreadHandler.postDelayed(runnable, time);
         }
+
+        /**
+         * 移除所有消息
+         */
+        public void removeAll() {
+            mainThreadHandler.removeCallbacksAndMessages(null);
+        }
     }
 }
