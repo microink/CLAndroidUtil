@@ -1,4 +1,4 @@
-package com.microink.clandroid.java.camera;
+package com.microink.clandroid.android.camera;
 
 import android.content.Context;
 import android.graphics.Bitmap;

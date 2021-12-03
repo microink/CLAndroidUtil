@@ -22,14 +22,12 @@ import android.widget.ImageView;
 
 import com.google.common.util.concurrent.ListenableFuture;
 import com.microink.clandroid.android.activity.CLBaseActivity;
-import com.microink.clandroid.android.dialog.DialogUtil;
 import com.microink.clandroid.android.img.BitmapUtil;
 import com.microink.clandroid.android.log.PrintLineLog;
-import com.microink.clandroid.java.camera.YuvToRgbConverter;
+import com.microink.clandroid.android.camera.YuvToRgbConverter;
 import com.microink.clcamerax.camera.CustomLifecycle;
 
 import java.io.File;
-import java.util.List;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
